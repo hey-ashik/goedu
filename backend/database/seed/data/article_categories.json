@@ -1,0 +1,17 @@
+[
+ {
+  "id": 1,
+  "name": "Tips and Techniques",
+  "slug": "tips-and-techniques"
+ },
+ {
+  "id": 2,
+  "name": "Instructor Guidelines",
+  "slug": "instructor-guidelines"
+ },
+ {
+  "id": 3,
+  "name": "Learning Tips",
+  "slug": "learning-tips"
+ }
+]

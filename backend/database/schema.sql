@@ -1,0 +1,427 @@
+-- =====================================================================
+--  GoEdu LMS - MySQL schema (MySQL 5.7+/8.x and MariaDB 10.4+ compatible)
+--  Run: npm run db:migrate   (creates the database if it does not exist)
+-- =====================================================================
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  phone VARCHAR(40) DEFAULT NULL,
+  photo VARCHAR(500) DEFAULT NULL,
+  role ENUM('learner','instructor','admin') NOT NULL DEFAULT 'learner',
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS languages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(80) NOT NULL,
+  flag VARCHAR(500) DEFAULT NULL,
+  serial DECIMAL(6,1) NOT NULL DEFAULT 10
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS categories (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  parent_id INT UNSIGNED DEFAULT NULL,
+  title VARCHAR(150) NOT NULL,
+  slug VARCHAR(170) NOT NULL UNIQUE,
+  icon VARCHAR(500) DEFAULT NULL,
+  is_featured TINYINT(1) NOT NULL DEFAULT 0,
+  sort_order INT NOT NULL DEFAULT 0,
+  CONSTRAINT fk_categories_parent FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE SET NULL,
+  INDEX idx_categories_parent (parent_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS instructors (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED DEFAULT NULL,
+  name VARCHAR(150) NOT NULL,
+  slug VARCHAR(170) NOT NULL UNIQUE,
+  email VARCHAR(190) DEFAULT NULL,
+  photo VARCHAR(500) DEFAULT NULL,
+  designation VARCHAR(190) DEFAULT NULL,
+  institute_name VARCHAR(190) DEFAULT NULL,
+  specialist VARCHAR(500) DEFAULT NULL,
+  about TEXT,
+  featured_topic VARCHAR(190) DEFAULT NULL,
+  promo_video VARCHAR(500) DEFAULT NULL,
+  is_featured TINYINT(1) NOT NULL DEFAULT 0,
+  is_mentor TINYINT(1) NOT NULL DEFAULT 0,
+  mentor_category VARCHAR(120) DEFAULT NULL,
+  mentor_rating DECIMAL(3,2) NOT NULL DEFAULT 5.00,
+  mentor_reviews INT NOT NULL DEFAULT 0,
+  session_price DECIMAL(10,2) DEFAULT NULL,
+  session_minutes INT NOT NULL DEFAULT 45,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_instructors_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS courses (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL UNIQUE,
+  category_id INT UNSIGNED DEFAULT NULL,
+  language_id INT UNSIGNED DEFAULT NULL,
+  owner_id INT UNSIGNED DEFAULT NULL,
+  level TINYINT NOT NULL DEFAULT 1,
+  level_name VARCHAR(40) NOT NULL DEFAULT 'Beginner',
+  type TINYINT NOT NULL DEFAULT 2,
+  status TINYINT NOT NULL DEFAULT 2,
+  thumbnail VARCHAR(500) DEFAULT NULL,
+  banner VARCHAR(500) DEFAULT NULL,
+  promo_video VARCHAR(500) DEFAULT NULL,
+  meta_description VARCHAR(500) DEFAULT NULL,
+  description MEDIUMTEXT,
+  what_you_learn MEDIUMTEXT,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  is_discount TINYINT(1) NOT NULL DEFAULT 0,
+  discount_price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  discount_percent DECIMAL(5,2) NOT NULL DEFAULT 0,
+  is_free TINYINT(1) NOT NULL DEFAULT 0,
+  is_subscription TINYINT(1) NOT NULL DEFAULT 0,
+  is_trending TINYINT(1) NOT NULL DEFAULT 0,
+  is_top_pick TINYINT(1) NOT NULL DEFAULT 0,
+  tags TEXT DEFAULT NULL,
+  keywords VARCHAR(500) DEFAULT NULL,
+  total_enroll INT NOT NULL DEFAULT 0,
+  avg_rating DECIMAL(3,2) NOT NULL DEFAULT 0,
+  total_rating INT NOT NULL DEFAULT 0,
+  course_length INT NOT NULL DEFAULT 0,
+  total_lesson INT NOT NULL DEFAULT 0,
+  total_quiz INT NOT NULL DEFAULT 0,
+  total_assignment INT NOT NULL DEFAULT 0,
+  shareable_certificate TINYINT(1) NOT NULL DEFAULT 1,
+  full_online TINYINT(1) NOT NULL DEFAULT 1,
+  flexible_schedule TINYINT(1) NOT NULL DEFAULT 1,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_courses_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+  CONSTRAINT fk_courses_language FOREIGN KEY (language_id) REFERENCES languages(id) ON DELETE SET NULL,
+  CONSTRAINT fk_courses_owner FOREIGN KEY (owner_id) REFERENCES instructors(id) ON DELETE SET NULL,
+  INDEX idx_courses_category (category_id),
+  INDEX idx_courses_owner (owner_id),
+  INDEX idx_courses_flags (status, is_subscription, is_free, is_trending, is_top_pick),
+  FULLTEXT INDEX ft_courses (title, keywords)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS course_sections (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  course_id INT UNSIGNED NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  CONSTRAINT fk_sections_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+  INDEX idx_sections_course (course_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS course_lessons (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  section_id INT UNSIGNED NOT NULL,
+  course_id INT UNSIGNED NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  type ENUM('video','quiz','assignment','article') NOT NULL DEFAULT 'video',
+  duration_seconds INT NOT NULL DEFAULT 0,
+  is_free_preview TINYINT(1) NOT NULL DEFAULT 0,
+  video_url VARCHAR(500) DEFAULT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  CONSTRAINT fk_lessons_section FOREIGN KEY (section_id) REFERENCES course_sections(id) ON DELETE CASCADE,
+  CONSTRAINT fk_lessons_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+  INDEX idx_lessons_course (course_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS bundles (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL UNIQUE,
+  short_description VARCHAR(500) DEFAULT NULL,
+  description MEDIUMTEXT,
+  career_outcome TEXT DEFAULT NULL,
+  what_you_learn TEXT DEFAULT NULL,
+  thumbnail VARCHAR(500) DEFAULT NULL,
+  banner VARCHAR(500) DEFAULT NULL,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  is_discount TINYINT(1) NOT NULL DEFAULT 0,
+  discount_price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  is_featured TINYINT(1) NOT NULL DEFAULT 0,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  total_enroll INT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS bundle_courses (
+  bundle_id INT UNSIGNED NOT NULL,
+  course_id INT UNSIGNED NOT NULL,
+  sort_order INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (bundle_id, course_id),
+  CONSTRAINT fk_bc_bundle FOREIGN KEY (bundle_id) REFERENCES bundles(id) ON DELETE CASCADE,
+  CONSTRAINT fk_bc_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS article_categories (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  slug VARCHAR(140) NOT NULL UNIQUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS articles (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  slug VARCHAR(255) NOT NULL UNIQUE,
+  category_id INT UNSIGNED DEFAULT NULL,
+  short_description TEXT,
+  body MEDIUMTEXT,
+  thumbnail VARCHAR(500) DEFAULT NULL,
+  banner VARCHAR(500) DEFAULT NULL,
+  author_name VARCHAR(150) DEFAULT NULL,
+  author_photo VARCHAR(500) DEFAULT NULL,
+  author_bio TEXT,
+  tags TEXT DEFAULT NULL,
+  read_time INT NOT NULL DEFAULT 5,
+  no_of_view INT NOT NULL DEFAULT 0,
+  is_featured TINYINT(1) NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1,
+  published_date DATE DEFAULT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_articles_category FOREIGN KEY (category_id) REFERENCES article_categories(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS article_comments (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  article_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  body TEXT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_ac_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+  CONSTRAINT fk_ac_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS testimonials (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  image VARCHAR(500) DEFAULT NULL,
+  description TEXT NOT NULL,
+  designation VARCHAR(150) DEFAULT NULL,
+  institute VARCHAR(150) DEFAULT NULL,
+  rating TINYINT NOT NULL DEFAULT 5,
+  sequence DECIMAL(6,1) NOT NULL DEFAULT 1,
+  page VARCHAR(40) NOT NULL DEFAULT 'home'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS footer_links (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  link VARCHAR(300) NOT NULL,
+  position_name ENUM('Left','Middle','Right') NOT NULL DEFAULT 'Left',
+  position INT NOT NULL DEFAULT 1,
+  sort_order INT NOT NULL DEFAULT 0,
+  is_published TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS site_settings (
+  setting_key VARCHAR(100) NOT NULL PRIMARY KEY,
+  setting_value TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS pages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  slug VARCHAR(150) NOT NULL UNIQUE,
+  title VARCHAR(255) NOT NULL,
+  content MEDIUMTEXT,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  email VARCHAR(190) NOT NULL,
+  phone VARCHAR(40) DEFAULT NULL,
+  subject VARCHAR(255) DEFAULT NULL,
+  message TEXT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS instructor_applications (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED DEFAULT NULL,
+  name VARCHAR(150) NOT NULL,
+  email VARCHAR(190) NOT NULL,
+  phone VARCHAR(40) DEFAULT NULL,
+  expertise VARCHAR(255) DEFAULT NULL,
+  institute VARCHAR(190) DEFAULT NULL,
+  apply_as ENUM('instructor','mentor') NOT NULL DEFAULT 'instructor',
+  message TEXT,
+  status ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_ia_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS subscription_packages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(80) NOT NULL,
+  package_choice ENUM('month','year') NOT NULL,
+  duration INT NOT NULL DEFAULT 1,
+  price DECIMAL(10,2) NOT NULL,
+  is_discount TINYINT(1) NOT NULL DEFAULT 0,
+  discount_price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  save_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
+  save_percentage DECIMAL(5,2) NOT NULL DEFAULT 0,
+  perks TEXT DEFAULT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS user_subscriptions (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  package_id INT UNSIGNED NOT NULL,
+  order_id INT UNSIGNED DEFAULT NULL,
+  starts_at DATETIME NOT NULL,
+  expires_at DATETIME NOT NULL,
+  status ENUM('active','expired','cancelled') NOT NULL DEFAULT 'active',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_us_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_us_package FOREIGN KEY (package_id) REFERENCES subscription_packages(id),
+  INDEX idx_us_user (user_id, status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS cart_items (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED DEFAULT NULL,
+  guest_id CHAR(36) DEFAULT NULL,
+  course_id INT UNSIGNED DEFAULT NULL,
+  bundle_id INT UNSIGNED DEFAULT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_cart_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_cart_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+  CONSTRAINT fk_cart_bundle FOREIGN KEY (bundle_id) REFERENCES bundles(id) ON DELETE CASCADE,
+  INDEX idx_cart_user (user_id),
+  INDEX idx_cart_guest (guest_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS wishlist (
+  user_id INT UNSIGNED NOT NULL,
+  course_id INT UNSIGNED NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, course_id),
+  CONSTRAINT fk_wish_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_wish_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS orders (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  order_number VARCHAR(40) NOT NULL UNIQUE,
+  user_id INT UNSIGNED NOT NULL,
+  subtotal DECIMAL(10,2) NOT NULL DEFAULT 0,
+  discount DECIMAL(10,2) NOT NULL DEFAULT 0,
+  total DECIMAL(10,2) NOT NULL DEFAULT 0,
+  coupon_code VARCHAR(60) DEFAULT NULL,
+  payment_method VARCHAR(60) NOT NULL DEFAULT 'sslcommerz',
+  payment_status ENUM('pending','paid','failed','refunded') NOT NULL DEFAULT 'pending',
+  transaction_id VARCHAR(100) DEFAULT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  paid_at DATETIME DEFAULT NULL,
+  CONSTRAINT fk_orders_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_orders_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS order_items (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  order_id INT UNSIGNED NOT NULL,
+  item_type ENUM('course','bundle','subscription') NOT NULL DEFAULT 'course',
+  course_id INT UNSIGNED DEFAULT NULL,
+  bundle_id INT UNSIGNED DEFAULT NULL,
+  package_id INT UNSIGNED DEFAULT NULL,
+  title VARCHAR(255) NOT NULL,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  CONSTRAINT fk_oi_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  CONSTRAINT fk_oi_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE SET NULL,
+  CONSTRAINT fk_oi_bundle FOREIGN KEY (bundle_id) REFERENCES bundles(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS enrollments (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  course_id INT UNSIGNED NOT NULL,
+  order_id INT UNSIGNED DEFAULT NULL,
+  source ENUM('purchase','free','subscription','bundle','admin') NOT NULL DEFAULT 'purchase',
+  progress DECIMAL(5,2) NOT NULL DEFAULT 0,
+  enrolled_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  completed_at DATETIME DEFAULT NULL,
+  UNIQUE KEY uq_enrollment (user_id, course_id),
+  CONSTRAINT fk_enr_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_enr_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+  CONSTRAINT fk_enr_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS lesson_progress (
+  user_id INT UNSIGNED NOT NULL,
+  lesson_id INT UNSIGNED NOT NULL,
+  course_id INT UNSIGNED NOT NULL,
+  completed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, lesson_id),
+  CONSTRAINT fk_lp_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_lp_lesson FOREIGN KEY (lesson_id) REFERENCES course_lessons(id) ON DELETE CASCADE,
+  INDEX idx_lp_course (user_id, course_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS reviews (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  course_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  rating TINYINT NOT NULL,
+  comment TEXT,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_review (course_id, user_id),
+  CONSTRAINT fk_rev_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+  CONSTRAINT fk_rev_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS mentor_bookings (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  mentor_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NOT NULL,
+  slot_at DATETIME NOT NULL,
+  note TEXT,
+  status ENUM('pending','confirmed','completed','cancelled') NOT NULL DEFAULT 'pending',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_mb_mentor FOREIGN KEY (mentor_id) REFERENCES instructors(id) ON DELETE CASCADE,
+  CONSTRAINT fk_mb_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------- AI Mentor chatbot ----------
+CREATE TABLE IF NOT EXISTS chat_conversations (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_key VARCHAR(80) NOT NULL,
+  user_id INT UNSIGNED DEFAULT NULL,
+  title VARCHAR(190) DEFAULT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_cc_key (user_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  conversation_id INT UNSIGNED NOT NULL,
+  role ENUM('user','assistant','system') NOT NULL,
+  content MEDIUMTEXT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_cm_conv FOREIGN KEY (conversation_id) REFERENCES chat_conversations(id) ON DELETE CASCADE,
+  INDEX idx_cm_conv (conversation_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Per-user rate limiting: CHAT_LIMIT messages, then blocked for CHAT_WINDOW_MINUTES
+CREATE TABLE IF NOT EXISTS chat_rate_limits (
+  user_key VARCHAR(80) NOT NULL PRIMARY KEY,
+  message_count INT NOT NULL DEFAULT 0,
+  window_started_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  blocked_until DATETIME DEFAULT NULL,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,0 +1,970 @@
+[
+ {
+  "id": 1,
+  "parent_id": null,
+  "title": "Media & Communication",
+  "slug": "media-communication",
+  "is_featured": 0,
+  "sort_order": 1
+ },
+ {
+  "id": 2,
+  "parent_id": 1,
+  "title": "Communication Skills",
+  "slug": "communication-skills-2",
+  "is_featured": 0,
+  "sort_order": 2
+ },
+ {
+  "id": 3,
+  "parent_id": 1,
+  "title": "Journalism",
+  "slug": "journalism-3",
+  "is_featured": 0,
+  "sort_order": 3
+ },
+ {
+  "id": 4,
+  "parent_id": 1,
+  "title": "Content Creation",
+  "slug": "content-creation-4",
+  "is_featured": 0,
+  "sort_order": 4
+ },
+ {
+  "id": 5,
+  "parent_id": 1,
+  "title": "Graphic Design",
+  "slug": "graphic-design-5",
+  "is_featured": 0,
+  "sort_order": 5
+ },
+ {
+  "id": 6,
+  "parent_id": 1,
+  "title": "Public Relations",
+  "slug": "public-relations-6",
+  "is_featured": 0,
+  "sort_order": 6
+ },
+ {
+  "id": 7,
+  "parent_id": 1,
+  "title": "Media Production",
+  "slug": "media-production-7",
+  "is_featured": 0,
+  "sort_order": 7
+ },
+ {
+  "id": 8,
+  "parent_id": 1,
+  "title": "Broadcasting",
+  "slug": "broadcasting-8",
+  "is_featured": 0,
+  "sort_order": 8
+ },
+ {
+  "id": 9,
+  "parent_id": 1,
+  "title": "Digital Media",
+  "slug": "digital-media-9",
+  "is_featured": 0,
+  "sort_order": 9
+ },
+ {
+  "id": 10,
+  "parent_id": null,
+  "title": "Humanities",
+  "slug": "humanities",
+  "is_featured": 0,
+  "sort_order": 10
+ },
+ {
+  "id": 11,
+  "parent_id": 10,
+  "title": "English Literature",
+  "slug": "english-literature-11",
+  "is_featured": 0,
+  "sort_order": 11
+ },
+ {
+  "id": 12,
+  "parent_id": 10,
+  "title": "Philosophy",
+  "slug": "philosophy-12",
+  "is_featured": 0,
+  "sort_order": 12
+ },
+ {
+  "id": 13,
+  "parent_id": 10,
+  "title": "Cultural Studies",
+  "slug": "cultural-studies-13",
+  "is_featured": 0,
+  "sort_order": 13
+ },
+ {
+  "id": 14,
+  "parent_id": null,
+  "title": "Science",
+  "slug": "science",
+  "is_featured": 0,
+  "sort_order": 14
+ },
+ {
+  "id": 15,
+  "parent_id": 14,
+  "title": "Computer Science",
+  "slug": "computer-science-15",
+  "is_featured": 0,
+  "sort_order": 15
+ },
+ {
+  "id": 16,
+  "parent_id": 14,
+  "title": "Environmental Science",
+  "slug": "environmental-science-16",
+  "is_featured": 0,
+  "sort_order": 16
+ },
+ {
+  "id": 17,
+  "parent_id": 14,
+  "title": "Biology",
+  "slug": "biology-17",
+  "is_featured": 0,
+  "sort_order": 17
+ },
+ {
+  "id": 18,
+  "parent_id": 14,
+  "title": "Physics",
+  "slug": "physics-18",
+  "is_featured": 0,
+  "sort_order": 18
+ },
+ {
+  "id": 19,
+  "parent_id": 14,
+  "title": "Pharmaceutical Science",
+  "slug": "pharmaceutical-science-19",
+  "is_featured": 0,
+  "sort_order": 19
+ },
+ {
+  "id": 20,
+  "parent_id": 14,
+  "title": "Mathematics",
+  "slug": "mathematics-20",
+  "is_featured": 0,
+  "sort_order": 20
+ },
+ {
+  "id": 21,
+  "parent_id": null,
+  "title": "Lifestyle & Fashion",
+  "slug": "lifestyle-fashion",
+  "is_featured": 0,
+  "sort_order": 21
+ },
+ {
+  "id": 22,
+  "parent_id": 21,
+  "title": "Fashion Design",
+  "slug": "fashion-design-22",
+  "is_featured": 0,
+  "sort_order": 22
+ },
+ {
+  "id": 23,
+  "parent_id": 21,
+  "title": "Lifestyle Branding",
+  "slug": "lifestyle-branding-23",
+  "is_featured": 0,
+  "sort_order": 23
+ },
+ {
+  "id": 24,
+  "parent_id": 21,
+  "title": "Fashion Marketing",
+  "slug": "fashion-marketing-24",
+  "is_featured": 0,
+  "sort_order": 24
+ },
+ {
+  "id": 25,
+  "parent_id": null,
+  "title": "Finance & Accounting",
+  "slug": "finance-accounting",
+  "is_featured": 0,
+  "sort_order": 25
+ },
+ {
+  "id": 26,
+  "parent_id": 25,
+  "title": "Financial Analysis",
+  "slug": "financial-analysis-26",
+  "is_featured": 0,
+  "sort_order": 26
+ },
+ {
+  "id": 27,
+  "parent_id": 25,
+  "title": "Accounting",
+  "slug": "accounting-27",
+  "is_featured": 0,
+  "sort_order": 27
+ },
+ {
+  "id": 28,
+  "parent_id": 25,
+  "title": "Financial Modeling",
+  "slug": "financial-modeling-28",
+  "is_featured": 0,
+  "sort_order": 28
+ },
+ {
+  "id": 29,
+  "parent_id": null,
+  "title": "Software & Applications",
+  "slug": "software-applications",
+  "is_featured": 0,
+  "sort_order": 29
+ },
+ {
+  "id": 30,
+  "parent_id": 29,
+  "title": "C Programming",
+  "slug": "c-programming-30",
+  "is_featured": 0,
+  "sort_order": 30
+ },
+ {
+  "id": 31,
+  "parent_id": 29,
+  "title": "Programming Languages",
+  "slug": "programming-languages-31",
+  "is_featured": 0,
+  "sort_order": 31
+ },
+ {
+  "id": 32,
+  "parent_id": 29,
+  "title": "Google Workspace",
+  "slug": "google-workspace-32",
+  "is_featured": 0,
+  "sort_order": 32
+ },
+ {
+  "id": 33,
+  "parent_id": 29,
+  "title": "Microsoft Office",
+  "slug": "microsoft-office-33",
+  "is_featured": 0,
+  "sort_order": 33
+ },
+ {
+  "id": 34,
+  "parent_id": 29,
+  "title": "PHP Programming",
+  "slug": "php-programming-34",
+  "is_featured": 0,
+  "sort_order": 34
+ },
+ {
+  "id": 35,
+  "parent_id": 29,
+  "title": "Database Management",
+  "slug": "database-management-35",
+  "is_featured": 0,
+  "sort_order": 35
+ },
+ {
+  "id": 36,
+  "parent_id": null,
+  "title": "Web Development",
+  "slug": "web-development",
+  "is_featured": 0,
+  "sort_order": 36
+ },
+ {
+  "id": 37,
+  "parent_id": 36,
+  "title": "Web Development",
+  "slug": "web-development-37",
+  "is_featured": 0,
+  "sort_order": 37
+ },
+ {
+  "id": 38,
+  "parent_id": null,
+  "title": "Marketing",
+  "slug": "Marketing",
+  "is_featured": 0,
+  "sort_order": 38
+ },
+ {
+  "id": 39,
+  "parent_id": 38,
+  "title": "Social Media Marketing",
+  "slug": "social-media-marketing-39",
+  "is_featured": 0,
+  "sort_order": 39
+ },
+ {
+  "id": 40,
+  "parent_id": 38,
+  "title": "Digital Marketing",
+  "slug": "digital-marketing-40",
+  "is_featured": 0,
+  "sort_order": 40
+ },
+ {
+  "id": 41,
+  "parent_id": 38,
+  "title": "Marketing",
+  "slug": "marketing-41",
+  "is_featured": 0,
+  "sort_order": 41
+ },
+ {
+  "id": 42,
+  "parent_id": 38,
+  "title": "Personal Branding",
+  "slug": "personal-branding-42",
+  "is_featured": 0,
+  "sort_order": 42
+ },
+ {
+  "id": 43,
+  "parent_id": 38,
+  "title": "Content Marketing",
+  "slug": "content-marketing-43",
+  "is_featured": 0,
+  "sort_order": 43
+ },
+ {
+  "id": 44,
+  "parent_id": 38,
+  "title": "SEO & SEM",
+  "slug": "seo-sem-44",
+  "is_featured": 0,
+  "sort_order": 44
+ },
+ {
+  "id": 45,
+  "parent_id": 38,
+  "title": "Influencer Marketing",
+  "slug": "influencer-marketing-45",
+  "is_featured": 0,
+  "sort_order": 45
+ },
+ {
+  "id": 46,
+  "parent_id": null,
+  "title": "Technology",
+  "slug": "technology",
+  "is_featured": 0,
+  "sort_order": 46
+ },
+ {
+  "id": 47,
+  "parent_id": 46,
+  "title": "Software Development",
+  "slug": "software-development-47",
+  "is_featured": 0,
+  "sort_order": 47
+ },
+ {
+  "id": 48,
+  "parent_id": 46,
+  "title": "Artificial Intelligence",
+  "slug": "artificial-intelligence-48",
+  "is_featured": 0,
+  "sort_order": 48
+ },
+ {
+  "id": 49,
+  "parent_id": 46,
+  "title": "Data Science",
+  "slug": "data-science-49",
+  "is_featured": 0,
+  "sort_order": 49
+ },
+ {
+  "id": 50,
+  "parent_id": 46,
+  "title": "Operating Systems",
+  "slug": "operating-systems-50",
+  "is_featured": 0,
+  "sort_order": 50
+ },
+ {
+  "id": 51,
+  "parent_id": 46,
+  "title": "Python Programming",
+  "slug": "python-programming-51",
+  "is_featured": 0,
+  "sort_order": 51
+ },
+ {
+  "id": 52,
+  "parent_id": 46,
+  "title": "Algorithm Design",
+  "slug": "algorithm-design-52",
+  "is_featured": 0,
+  "sort_order": 52
+ },
+ {
+  "id": 53,
+  "parent_id": 46,
+  "title": "Textile Technology",
+  "slug": "textile-technology-53",
+  "is_featured": 0,
+  "sort_order": 53
+ },
+ {
+  "id": 54,
+  "parent_id": 46,
+  "title": "Mobile App Development",
+  "slug": "mobile-app-development-54",
+  "is_featured": 0,
+  "sort_order": 54
+ },
+ {
+  "id": 55,
+  "parent_id": 46,
+  "title": "Machine Learning",
+  "slug": "machine-learning-55",
+  "is_featured": 0,
+  "sort_order": 55
+ },
+ {
+  "id": 56,
+  "parent_id": 46,
+  "title": "Cyber Security",
+  "slug": "cyber-security-56",
+  "is_featured": 0,
+  "sort_order": 56
+ },
+ {
+  "id": 57,
+  "parent_id": 46,
+  "title": "Safety and Health of Occupants",
+  "slug": "safety-and-health-of-occupants-57",
+  "is_featured": 0,
+  "sort_order": 57
+ },
+ {
+  "id": 58,
+  "parent_id": 46,
+  "title": "Industrial Technology",
+  "slug": "industrial-technology-58",
+  "is_featured": 0,
+  "sort_order": 58
+ },
+ {
+  "id": 59,
+  "parent_id": 46,
+  "title": "Blockchain",
+  "slug": "blockchain-59",
+  "is_featured": 0,
+  "sort_order": 59
+ },
+ {
+  "id": 60,
+  "parent_id": 46,
+  "title": "Frontend Development",
+  "slug": "frontend-development-60",
+  "is_featured": 0,
+  "sort_order": 60
+ },
+ {
+  "id": 61,
+  "parent_id": 46,
+  "title": "IT Career Development",
+  "slug": "it-career-development-61",
+  "is_featured": 0,
+  "sort_order": 61
+ },
+ {
+  "id": 62,
+  "parent_id": 46,
+  "title": "Networking Basics",
+  "slug": "networking-basics-62",
+  "is_featured": 0,
+  "sort_order": 62
+ },
+ {
+  "id": 63,
+  "parent_id": 46,
+  "title": "Digital Electronics",
+  "slug": "digital-electronics-63",
+  "is_featured": 0,
+  "sort_order": 63
+ },
+ {
+  "id": 64,
+  "parent_id": 46,
+  "title": "Generative AI",
+  "slug": "generative-ai-64",
+  "is_featured": 0,
+  "sort_order": 64
+ },
+ {
+  "id": 65,
+  "parent_id": 46,
+  "title": "Java Programming",
+  "slug": "java-programming-65",
+  "is_featured": 0,
+  "sort_order": 65
+ },
+ {
+  "id": 66,
+  "parent_id": 46,
+  "title": "Robotics",
+  "slug": "robotics-66",
+  "is_featured": 0,
+  "sort_order": 66
+ },
+ {
+  "id": 67,
+  "parent_id": 46,
+  "title": "Digital Transformation",
+  "slug": "digital-transformation-67",
+  "is_featured": 0,
+  "sort_order": 67
+ },
+ {
+  "id": 68,
+  "parent_id": 46,
+  "title": "Ethical Hacking",
+  "slug": "ethical-hacking-68",
+  "is_featured": 0,
+  "sort_order": 68
+ },
+ {
+  "id": 69,
+  "parent_id": 46,
+  "title": "3D Modeling & Animation",
+  "slug": "3d-modeling-animation-69",
+  "is_featured": 0,
+  "sort_order": 69
+ },
+ {
+  "id": 70,
+  "parent_id": null,
+  "title": "Business",
+  "slug": "business",
+  "is_featured": 0,
+  "sort_order": 70
+ },
+ {
+  "id": 71,
+  "parent_id": 70,
+  "title": "Leadership",
+  "slug": "leadership-71",
+  "is_featured": 0,
+  "sort_order": 71
+ },
+ {
+  "id": 72,
+  "parent_id": 70,
+  "title": "Entrepreneurship",
+  "slug": "entrepreneurship-72",
+  "is_featured": 0,
+  "sort_order": 72
+ },
+ {
+  "id": 73,
+  "parent_id": 70,
+  "title": "Project Management",
+  "slug": "project-management-73",
+  "is_featured": 0,
+  "sort_order": 73
+ },
+ {
+  "id": 74,
+  "parent_id": 70,
+  "title": "Human Resources",
+  "slug": "human-resources-74",
+  "is_featured": 0,
+  "sort_order": 74
+ },
+ {
+  "id": 75,
+  "parent_id": 70,
+  "title": "Finance",
+  "slug": "finance-75",
+  "is_featured": 0,
+  "sort_order": 75
+ },
+ {
+  "id": 76,
+  "parent_id": 70,
+  "title": "Business Strategy",
+  "slug": "business-strategy-76",
+  "is_featured": 0,
+  "sort_order": 76
+ },
+ {
+  "id": 77,
+  "parent_id": 70,
+  "title": "Networking",
+  "slug": "networking-77",
+  "is_featured": 0,
+  "sort_order": 77
+ },
+ {
+  "id": 78,
+  "parent_id": 70,
+  "title": "Freelancing",
+  "slug": "freelancing-78",
+  "is_featured": 0,
+  "sort_order": 78
+ },
+ {
+  "id": 79,
+  "parent_id": 70,
+  "title": "Remote Work",
+  "slug": "remote-work-79",
+  "is_featured": 0,
+  "sort_order": 79
+ },
+ {
+  "id": 80,
+  "parent_id": 70,
+  "title": "Customer Relationship Management",
+  "slug": "customer-relationship-management-80",
+  "is_featured": 0,
+  "sort_order": 80
+ },
+ {
+  "id": 81,
+  "parent_id": 70,
+  "title": "Sales & Marketing",
+  "slug": "sales-marketing-81",
+  "is_featured": 0,
+  "sort_order": 81
+ },
+ {
+  "id": 82,
+  "parent_id": null,
+  "title": "Engineering",
+  "slug": "engineering",
+  "is_featured": 0,
+  "sort_order": 82
+ },
+ {
+  "id": 83,
+  "parent_id": 82,
+  "title": "Civil Engineering",
+  "slug": "civil-engineering-83",
+  "is_featured": 0,
+  "sort_order": 83
+ },
+ {
+  "id": 84,
+  "parent_id": 82,
+  "title": "Mechanical Engineering",
+  "slug": "mechanical-engineering-84",
+  "is_featured": 0,
+  "sort_order": 84
+ },
+ {
+  "id": 85,
+  "parent_id": 82,
+  "title": "Electrical Engineering",
+  "slug": "electrical-engineering-85",
+  "is_featured": 0,
+  "sort_order": 85
+ },
+ {
+  "id": 86,
+  "parent_id": null,
+  "title": "Personal Development",
+  "slug": "personal-development",
+  "is_featured": 0,
+  "sort_order": 86
+ },
+ {
+  "id": 87,
+  "parent_id": 86,
+  "title": "Career Development",
+  "slug": "career-development-87",
+  "is_featured": 0,
+  "sort_order": 87
+ },
+ {
+  "id": 88,
+  "parent_id": 86,
+  "title": "Stress Management",
+  "slug": "stress-management-88",
+  "is_featured": 0,
+  "sort_order": 88
+ },
+ {
+  "id": 89,
+  "parent_id": 86,
+  "title": "Habits & Productivity",
+  "slug": "habits-productivity-89",
+  "is_featured": 0,
+  "sort_order": 89
+ },
+ {
+  "id": 90,
+  "parent_id": 86,
+  "title": "Public Speaking",
+  "slug": "public-speaking-90",
+  "is_featured": 0,
+  "sort_order": 90
+ },
+ {
+  "id": 91,
+  "parent_id": 86,
+  "title": "Effective Communication",
+  "slug": "effective-communication-91",
+  "is_featured": 0,
+  "sort_order": 91
+ },
+ {
+  "id": 92,
+  "parent_id": 86,
+  "title": "Time Management",
+  "slug": "time-management-92",
+  "is_featured": 0,
+  "sort_order": 92
+ },
+ {
+  "id": 93,
+  "parent_id": 86,
+  "title": "Mindfulness",
+  "slug": "mindfulness-93",
+  "is_featured": 0,
+  "sort_order": 93
+ },
+ {
+  "id": 94,
+  "parent_id": 86,
+  "title": "Critical Thinking",
+  "slug": "critical-thinking-94",
+  "is_featured": 0,
+  "sort_order": 94
+ },
+ {
+  "id": 95,
+  "parent_id": 86,
+  "title": "Conflict Analysis",
+  "slug": "conflict-analysis-95",
+  "is_featured": 0,
+  "sort_order": 95
+ },
+ {
+  "id": 96,
+  "parent_id": null,
+  "title": "Creative Arts",
+  "slug": "creative-arts",
+  "is_featured": 0,
+  "sort_order": 96
+ },
+ {
+  "id": 97,
+  "parent_id": 96,
+  "title": "Fine Arts",
+  "slug": "fine-arts-97",
+  "is_featured": 0,
+  "sort_order": 97
+ },
+ {
+  "id": 98,
+  "parent_id": 96,
+  "title": "Video Production",
+  "slug": "video-production-98",
+  "is_featured": 0,
+  "sort_order": 98
+ },
+ {
+  "id": 99,
+  "parent_id": 96,
+  "title": "Music Production",
+  "slug": "music-production-99",
+  "is_featured": 0,
+  "sort_order": 99
+ },
+ {
+  "id": 100,
+  "parent_id": 96,
+  "title": "Photography",
+  "slug": "photography-100",
+  "is_featured": 0,
+  "sort_order": 100
+ },
+ {
+  "id": 101,
+  "parent_id": 96,
+  "title": "After Effects",
+  "slug": "after-effects-101",
+  "is_featured": 0,
+  "sort_order": 101
+ },
+ {
+  "id": 102,
+  "parent_id": null,
+  "title": "Education & Teaching",
+  "slug": "education-teaching",
+  "is_featured": 0,
+  "sort_order": 102
+ },
+ {
+  "id": 103,
+  "parent_id": 102,
+  "title": "Teaching Skills",
+  "slug": "teaching-skills-103",
+  "is_featured": 0,
+  "sort_order": 103
+ },
+ {
+  "id": 104,
+  "parent_id": 102,
+  "title": "Language Learning",
+  "slug": "language-learning-104",
+  "is_featured": 0,
+  "sort_order": 104
+ },
+ {
+  "id": 105,
+  "parent_id": 102,
+  "title": "Test Prep (e.g., IELTS, TOEFL)",
+  "slug": "test-prep-eg-ielts-toefl-105",
+  "is_featured": 0,
+  "sort_order": 105
+ },
+ {
+  "id": 106,
+  "parent_id": 102,
+  "title": "Academic Writing",
+  "slug": "academic-writing-106",
+  "is_featured": 0,
+  "sort_order": 106
+ },
+ {
+  "id": 107,
+  "parent_id": 102,
+  "title": "Education Technology",
+  "slug": "education-technology-107",
+  "is_featured": 0,
+  "sort_order": 107
+ },
+ {
+  "id": 108,
+  "parent_id": null,
+  "title": "Health & Wellness",
+  "slug": "health-wellness",
+  "is_featured": 0,
+  "sort_order": 108
+ },
+ {
+  "id": 109,
+  "parent_id": 108,
+  "title": "Nutrition & Dietetics",
+  "slug": "nutrition-dietetics-109",
+  "is_featured": 0,
+  "sort_order": 109
+ },
+ {
+  "id": 110,
+  "parent_id": 108,
+  "title": "Health & Wellness",
+  "slug": "health-wellness-110",
+  "is_featured": 0,
+  "sort_order": 110
+ },
+ {
+  "id": 111,
+  "parent_id": 108,
+  "title": "First Aid Training",
+  "slug": "first-aid-training-111",
+  "is_featured": 0,
+  "sort_order": 111
+ },
+ {
+  "id": 112,
+  "parent_id": 108,
+  "title": "Wellness Coaching",
+  "slug": "wellness-coaching-112",
+  "is_featured": 0,
+  "sort_order": 112
+ },
+ {
+  "id": 113,
+  "parent_id": 108,
+  "title": "Mental Health",
+  "slug": "mental-health-113",
+  "is_featured": 0,
+  "sort_order": 113
+ },
+ {
+  "id": 114,
+  "parent_id": null,
+  "title": "Parenting & Family",
+  "slug": "parenting-family",
+  "is_featured": 0,
+  "sort_order": 114
+ },
+ {
+  "id": 115,
+  "parent_id": 114,
+  "title": "Parenting Skills",
+  "slug": "parenting-skills-115",
+  "is_featured": 0,
+  "sort_order": 115
+ },
+ {
+  "id": 116,
+  "parent_id": 114,
+  "title": "Child Development",
+  "slug": "child-development-116",
+  "is_featured": 0,
+  "sort_order": 116
+ },
+ {
+  "id": 117,
+  "parent_id": null,
+  "title": "Law & Legal Studies",
+  "slug": "law-legal-studies",
+  "is_featured": 0,
+  "sort_order": 117
+ },
+ {
+  "id": 118,
+  "parent_id": null,
+  "title": "Hospitality & Tourism",
+  "slug": "tourism-and-hospitality",
+  "is_featured": 0,
+  "sort_order": 118
+ },
+ {
+  "id": 119,
+  "parent_id": 118,
+  "title": "Event Management",
+  "slug": "event-management-119",
+  "is_featured": 0,
+  "sort_order": 119
+ },
+ {
+  "id": 120,
+  "parent_id": null,
+  "title": "Animation",
+  "slug": "animation",
+  "is_featured": 0,
+  "sort_order": 120
+ },
+ {
+  "id": 121,
+  "parent_id": null,
+  "title": "Other Topics",
+  "slug": "other-topics",
+  "is_featured": 0,
+  "sort_order": 121
+ }
+]

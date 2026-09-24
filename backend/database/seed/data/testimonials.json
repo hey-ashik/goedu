@@ -1,0 +1,62 @@
+[
+ {
+  "name": "MD. REDWAN HOSSAIN HRIDOY",
+  "image": "/images/testimonials/profile-1.png",
+  "description": "Lots of effective courses are available both free and paid. I have completed some 5 of them and willing to get more. The learning procedure and self test method is a great way to effective learning. I thanks to the go edu platform team.",
+  "designation": "Learner",
+  "institute": "GoEdu",
+  "rating": 5,
+  "sequence": 1,
+  "page": "home"
+ },
+ {
+  "name": "MD Fahad Al Shakib",
+  "image": "/images/testimonials/profile-2.png",
+  "description": "GoEdu is excellent. I am satisfied with the service. I learned many courses in this platform . And I think it is helping me to increase my educational and soft skills.",
+  "designation": "Learner",
+  "institute": "GoEdu",
+  "rating": 5,
+  "sequence": 2,
+  "page": "home"
+ },
+ {
+  "name": "Ishrat Nazifa",
+  "image": "/images/testimonials/profile-3.png",
+  "description": "So, basically the accounting course I had bought recently, was extremely helpful for anyone who's interested to learn basics of accounting. Thank you ✨",
+  "designation": "Learner",
+  "institute": "GoEdu",
+  "rating": 5,
+  "sequence": 3,
+  "page": "home"
+ },
+ {
+  "name": "Parimal R.",
+  "designation": "Marketing Executive, Dhaka",
+  "description": "GoEdu Plus helped me stop worrying about which course to buy next. I can explore new courses and continue learning with less pressure.",
+  "image": null,
+  "institute": "GoEdu",
+  "rating": 5,
+  "sequence": 1,
+  "page": "subscription"
+ },
+ {
+  "name": "Ahmed S.",
+  "designation": "Fresh Graduate, Chittagong",
+  "description": "The AI Mentor made the experience more guided. Instead of randomly choosing courses, I now have a clearer idea of what to learn next.",
+  "image": null,
+  "institute": "GoEdu",
+  "rating": 5,
+  "sequence": 2,
+  "page": "subscription"
+ },
+ {
+  "name": "Arif H.",
+  "designation": "Freelancer, Sylhet",
+  "description": "The yearly plan feels very small when I calculate it per day. It is much better than buying many courses separately.",
+  "image": null,
+  "institute": "GoEdu",
+  "rating": 5,
+  "sequence": 3,
+  "page": "subscription"
+ }
+]

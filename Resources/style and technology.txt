@@ -1,0 +1,581 @@
+Reference Website: https://goedu.ac/
+
+/* Created by Peek from goedu.ac */
+/* Version: 0.8.10.1 */
+/* Created at: 9/24/2026, 2:47:44 PM */
+/* Learn more: https://trypeek.app */
+
+:root {
+  /* 87 Colors */
+  --color-white: #ffffff;
+  --color-white-1: #fefeff;
+  --color-lavender: #bfdbfe;
+  --color-lavender-1: #e5e7eb;
+  --color-lavender-2: #e2e8f0;
+  --color-lavender-3: #e7e7e7;
+  --color-lavender-4: #e8e8e8;
+  --color-white-smoke: #f2f2f2;
+  --color-white-smoke-1: #f3f4f6;
+  --color-ghost-white: #f9fafb;
+  --color-linen: #ffedd5;
+  --color-floral-white: #fffcf6;
+  --color-old-lace: #fff6dd;
+  --color-old-lace-1: #fff5de;
+  --color-gainsboro: #e0e0e0;
+  --color-light-gray: #cdcdce;
+  --color-light-gray-1: #d1d5db;
+  --color-wheat: #fed7aa;
+  --color-wheat-1: #ffecb9;
+  --color-wheat-2: #fef9c3;
+  --color-silver: #b7b7b7;
+  --color-silver-1: #ccc9c4;
+  --color-khaki: #f7df6c;
+  --color-khaki-1: #fde68a;
+  --color-medium-purple: #a78bfa;
+  --color-dark-gray: #999999;
+  --color-dark-gray-1: #9ca3af;
+  --color-dark-gray-2: #1a1a1a;
+  --color-dark-gray-3: #0f172a;
+  --color-dark-gray-4: #111827;
+  --color-dark-gray-5: #1e1e1e;
+  --color-dark-gray-6: #133a3a;
+  --color-dark-gray-7: #4c0519;
+  --color-dark-gray-8: #213130;
+  --color-dark-gray-9: #1a1f36;
+  --color-dark-gray-10: #1f2937;
+  --color-dark-gray-11: #1e293b;
+  --color-dark-gray-12: #2c2c2c;
+  --color-dark-gray-13: #222939;
+  --color-dark-gray-14: #333333;
+  --color-dark-gray-15: #323232;
+  --color-dark-gray-16: #373737;
+  --color-tomato: #ef4444;
+  --color-tomato-1: #f43f5e;
+  --color-royal-blue: #0066f5;
+  --color-royal-blue-1: #007aff;
+  --color-royal-blue-2: #2563eb;
+  --color-royal-blue-3: #3b82f6;
+  --color-royal-blue-4: #6366f1;
+  --color-medium-orchid: #a855f7;
+  --color-coral: #fb923c;
+  --color-pastel-orange: #f5b622;
+  --color-pastel-orange-1: #f8aa28;
+  --color-pastel-orange-2: #fbbf24;
+  --color-pastel-orange-3: #fcd34d;
+  --color-gray: #868686;
+  --color-gray-1: #757575;
+  --color-gray-2: #777777;
+  --color-dark-khaki: #bc995d;
+  --color-blue-violet: #9333ea;
+  --color-dark-orange: #ed8e22;
+  --color-orange: #e7b108;
+  --color-orange-1: #eab308;
+  --color-orange-2: #f3ac08;
+  --color-orange-3: #f59e0b;
+  --color-orange-4: #fbbc05;
+  --color-orange-5: #f4a215;
+  --color-orange-6: #fca311;
+  --color-orange-7: #f97316;
+  --color-golden-yellow: #ffc107;
+  --color-golden-yellow-1: #facc15;
+  --color-dim-gray: #666666;
+  --color-slate-gray: #6b7280;
+  --color-lime-green: #22c55e;
+  --color-charcoal: #525252;
+  --color-charcoal-1: #594226;
+  --color-charcoal-2: #713f12;
+  --color-dark-slate-gray: #374151;
+  --color-dark-slate-gray-1: #334155;
+  --color-dark-slate-gray-2: #4b5563;
+  --color-forest-green: #16a34a;
+  --color-fire-brick: #92400e;
+  --color-light-sea-green: #10b981;
+  --color-teal: #00b67a;
+  --color-teal-1: #059669;
+  --color-midnight-blue: #001858;
+  --color-black: #000000;
+
+  /* 6 Gradients */
+  --gradient-radial: radial-gradient(65% 90% at 50% 100%, #ffb200, #f3ac08, #fdd746 100%);
+  --gradient-linear: linear-gradient(#f3ac08 20%, #fdd746);
+  --gradient-linear-1: linear-gradient(#ffedd8, #ffd8ac);
+  --gradient-linear-2: linear-gradient(to top, #222939, #ffffff, #000000);
+  --gradient-linear-3: linear-gradient(to top, #fdeabf, #fef6e4, #fff8e9);
+  --gradient-linear-4: linear-gradient(135deg, #f5b622, #d09b1d);
+}
+
+
+
+/* Created by Peek from goedu.ac */
+/* Version: 0.8.10.1 */
+/* Created at: 9/24/2026, 2:47:58 PM */
+/* Learn more: https://trypeek.app */
+
+/* 61 identified type styles */
+/* Typography – Raw tokens (Layer 2) */
+:root {
+  --font-inter: Inter, sans-serif;
+  --font-lexend-deca: 'Lexend Deca', sans-serif;
+  --font-karantina: Karantina, sans-serif;
+  --font-inter-inter-fallback-apple-system: 'Inter, Inter Fallback, -apple-system', sans-serif;
+  --font-work-sans: 'Work Sans', sans-serif;
+  --font-lexend: Lexend, sans-serif;
+  --font-jost-jost-fallback: 'Jost, Jost Fallback', sans-serif;
+  --text-12: 12px;
+  --text-13: 13px;
+  --text-14: 14px;
+  --text-15: 15px;
+  --text-16: 16px;
+  --text-18: 18px;
+  --text-20: 20px;
+  --text-22: 22px;
+  --text-30: 30px;
+  --text-36: 36px;
+  --text-40: 40px;
+  --text-42: 42px;
+  --text-48: 48px;
+  --text-60: 60px;
+  --text-480: 480px;
+  --tracking-14-4: 14.4px;
+  --tracking-neg-1-2: -1.2px;
+  --tracking-0-75: 0.75px;
+  --tracking-neg-0-35: -0.35px;
+}
+
+/* Typography – Semantic type styles (Layer 1) */
+.type-body {
+  font-family: var(--font-inter);
+  font-size: var(--text-480);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: var(--tracking-14-4);
+}
+
+.type-body-60 {
+  font-family: var(--font-inter);
+  font-size: var(--text-60);
+  font-weight: 700;
+  line-height: 1.00;
+}
+
+.type-h2 {
+  font-family: var(--font-lexend-deca);
+  font-size: var(--text-48);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: var(--tracking-neg-1-2);
+}
+
+.type-h2-48 {
+  font-family: var(--font-inter);
+  font-size: var(--text-48);
+  font-weight: 700;
+  line-height: 1.00;
+}
+
+.type-body-48 {
+  font-family: var(--font-inter);
+  font-size: var(--text-48);
+  font-weight: 700;
+  line-height: 1.00;
+}
+
+.type-h2-48-600 {
+  font-family: var(--font-lexend-deca);
+  font-size: var(--text-48);
+  font-weight: 600;
+  line-height: 1.00;
+}
+
+.type-h1 {
+  font-family: var(--font-inter);
+  font-size: var(--text-42);
+  font-weight: 700;
+  line-height: 1.26;
+}
+
+.type-h2-40 {
+  font-family: var(--font-inter);
+  font-size: var(--text-40);
+  font-weight: 700;
+  line-height: 1.00;
+}
+
+.type-h2-36 {
+  font-family: var(--font-lexend-deca);
+  font-size: var(--text-36);
+  font-weight: 700;
+  line-height: 1.11;
+}
+
+.type-h2-36-600 {
+  font-family: var(--font-lexend-deca);
+  font-size: var(--text-36);
+  font-weight: 600;
+  line-height: 1.11;
+}
+
+.type-title {
+  font-family: var(--font-inter);
+  font-size: var(--text-30);
+  font-weight: 800;
+  line-height: 1.20;
+}
+
+.type-h3 {
+  font-family: var(--font-karantina);
+  font-size: var(--text-30);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: var(--tracking-0-75);
+}
+
+.type-subheading {
+  font-family: var(--font-inter-inter-fallback-apple-system);
+  font-size: var(--text-22);
+  font-weight: 700;
+  line-height: 1.50;
+}
+
+.type-subheading-22 {
+  font-family: var(--font-inter);
+  font-size: var(--text-22);
+  font-weight: 700;
+  line-height: 1.50;
+}
+
+.type-subheading-22-600 {
+  font-family: var(--font-inter-inter-fallback-apple-system);
+  font-size: var(--text-22);
+  font-weight: 600;
+  line-height: 1.50;
+}
+
+.type-subheading-22-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-22);
+  font-weight: 400;
+  line-height: 1.38;
+}
+
+.type-h3-20 {
+  font-family: var(--font-inter);
+  font-size: var(--text-20);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.type-h3-20-700 {
+  font-family: var(--font-inter);
+  font-size: var(--text-20);
+  font-weight: 700;
+  line-height: 1.50;
+}
+
+.type-subheading-20 {
+  font-family: var(--font-inter);
+  font-size: var(--text-20);
+  font-weight: 700;
+  line-height: 1.40;
+}
+
+.type-body-20 {
+  font-family: var(--font-inter);
+  font-size: var(--text-20);
+  font-weight: 500;
+  line-height: 1.40;
+}
+
+.type-large-body {
+  font-family: var(--font-inter);
+  font-size: var(--text-18);
+  font-weight: 700;
+  line-height: 1.56;
+}
+
+.type-h3-18 {
+  font-family: var(--font-inter);
+  font-size: var(--text-18);
+  font-weight: 600;
+  line-height: 1.56;
+}
+
+.type-body-18 {
+  font-family: var(--font-inter);
+  font-size: var(--text-18);
+  font-weight: 500;
+  line-height: 1.56;
+}
+
+.type-body-18-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-18);
+  font-weight: 400;
+  line-height: 1.56;
+}
+
+.type-large-body-18 {
+  font-family: var(--font-inter);
+  font-size: var(--text-18);
+  font-weight: 400;
+  line-height: 1.56;
+}
+
+.type-body-18-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-18);
+  font-weight: 400;
+  line-height: 1.56;
+}
+
+.type-heading {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 700;
+  line-height: 1.50;
+}
+
+.type-body-16 {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 600;
+  line-height: 1.50;
+}
+
+.type-button {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 600;
+  line-height: 1.50;
+}
+
+.type-link {
+  font-family: var(--font-work-sans);
+  font-size: var(--text-16);
+  font-weight: 600;
+  line-height: 1.50;
+}
+
+.type-button-16 {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 500;
+  line-height: 1.50;
+}
+
+.type-body-16-500 {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 500;
+  line-height: 1.50;
+}
+
+.type-body-16-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.type-body-16-400 {
+  font-family: var(--font-inter-inter-fallback-apple-system);
+  font-size: var(--text-16);
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.type-button-16-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.type-body-16-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.type-link-16 {
+  font-family: var(--font-work-sans);
+  font-size: var(--text-16);
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.type-body-16-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-16);
+  font-weight: 400;
+  line-height: 1.63;
+}
+
+.type-body-16-400 {
+  font-family: var(--font-lexend);
+  font-size: var(--text-16);
+  font-weight: 400;
+  line-height: 1.50;
+}
+
+.type-h3-15 {
+  font-family: var(--font-inter);
+  font-size: var(--text-15);
+  font-weight: 600;
+  line-height: 1.63;
+}
+
+.type-subheading-14 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 700;
+  line-height: 1.43;
+}
+
+.type-link-14 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 700;
+  line-height: 1.38;
+}
+
+.type-subheading-14-700 {
+  font-family: var(--font-inter-inter-fallback-apple-system);
+  font-size: var(--text-14);
+  font-weight: 700;
+  line-height: 1.43;
+}
+
+.type-subheading-14-700 {
+  font-family: var(--font-inter-inter-fallback-apple-system);
+  font-size: var(--text-14);
+  font-weight: 700;
+  line-height: 1.43;
+}
+
+.type-subheading-14-700 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 700;
+  line-height: 1.43;
+  letter-spacing: var(--tracking-neg-0-35);
+}
+
+.type-subheading-14-700 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 700;
+  line-height: 1.43;
+  letter-spacing: var(--tracking-neg-0-35);
+}
+
+.type-subheading-14-700 {
+  font-family: var(--font-lexend);
+  font-size: var(--text-14);
+  font-weight: 700;
+  line-height: 1.43;
+}
+
+.type-link-14-600 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 600;
+  line-height: 1.43;
+}
+
+.type-button-14 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 600;
+  line-height: 1.43;
+}
+
+.type-body-14 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 500;
+  line-height: 1.43;
+}
+
+.type-button-14-500 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 500;
+  line-height: 1.43;
+}
+
+.type-body-14-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 400;
+  line-height: 1.43;
+}
+
+.type-body-14-400 {
+  font-family: var(--font-jost-jost-fallback);
+  font-size: var(--text-14);
+  font-weight: 400;
+  line-height: 1.43;
+}
+
+.type-small-body {
+  font-family: var(--font-inter-inter-fallback-apple-system);
+  font-size: var(--text-14);
+  font-weight: 400;
+  line-height: 1.43;
+}
+
+.type-body-14-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 400;
+  line-height: 1.63;
+}
+
+.type-small-body-14 {
+  font-family: var(--font-work-sans);
+  font-size: var(--text-14);
+  font-weight: 400;
+  line-height: 1.43;
+}
+
+.type-body-14-400 {
+  font-family: var(--font-inter);
+  font-size: var(--text-14);
+  font-weight: 400;
+  line-height: 1.43;
+}
+
+.type-body-13 {
+  font-family: var(--font-inter);
+  font-size: var(--text-13);
+  font-weight: 400;
+  line-height: 1.54;
+}
+
+.type-caption {
+  font-family: var(--font-inter);
+  font-size: var(--text-13);
+  font-weight: 400;
+  line-height: 1.23;
+}
+
+.type-caption-12 {
+  font-family: var(--font-inter);
+  font-size: var(--text-12);
+  font-weight: 500;
+  line-height: 1.33;
+}
+
+.type-body-12 {
+  font-family: var(--font-inter);
+  font-size: var(--text-12);
+  font-weight: 400;
+  line-height: 1.63;
+}
+
+
+URL	Miscellaneous	Widgets	Analytics	Comment systems	Security	Font scripts	CDN	Marketing automation	Advertising	Webcams	Tag managers	Live chat	JavaScript libraries	Cookie compliance	Accessibility	SSL/TLS certificate authorities	Affiliate programs	Appointment scheduling	Surveys	A/B testing	Email	Personalization	Retargeting	RUM	Geolocation	Browser fingerprinting	Loyalty & rewards	Feature management	Segmentation	Hosting	Translation	Reviews	Buy now pay later	Performance	Reservations & delivery	Referral marketing	Digital asset management	Content curation	Customer data platform	Cart abandonment	Shipping carriers	Recruitment & staffing	Returns	Livestreaming	Ticket booking	Augmented reality	Domain parking	Fundraising & donations	JavaScript frameworks	Web servers	Mobile frameworks	Payment processors	SEO	User onboarding	Containers	PaaS	IaaS	WordPress plugins	Shopify apps	Form builders	Video players	Web frameworks	Caching	Web server extensions	Reverse proxies	Load balancers	UI frameworks	WordPress themes	Shopify themes	Drupal themes	JavaScript graphics	Operating systems	Maps	Authentication	Cross border ecommerce	Fulfilment	Ecommerce frontends	Rich text editors	Programming languages	Databases	CRM	Cryptominers	Editor	Search engines	CI	Database managers	Documentation tools	Hosting panels	Issue trackers	Webmail	Network services		Development	Network storage	CMS	Message boards	Ecommerce	Photo galleries	Wikis	Blogs	LMS	Media servers	Remote Access	Feed readers	DMS	Page builder	Accounting	Static site generators	Phone number	Skype	WhatsApp	Email address	Email address (verified)	Email address (safe)	Twitter	Facebook	Instagram	GitHub	TikTok	YouTube	Pinterest	LinkedIn	Owler	Title	Description	Copyright	Copyright year	Responsive	schema.org types	Cert organisation	Cert country	Cert state	Cert locality	Cert issuer	Cert protocol	Cert expiry	SPF record	DMARC record	Google Analytics	Google AdSense	Medianet	Facebook	Optimizely	Company name	Inferred company name	Industry	About	Locations	Company size	Company type	Company founded	People
+https://goedu.ac	PWA ; Open Graph		Google Analytics		reCAPTCHA	Lucide					Google Tag Manager		Swiper ; Framer Motion																					Priority Hints															React ; Next.js	Nginx ; Next.js											VideoJS	Next.js			Nginx		Tailwind CSS					Ubuntu		NextAuth.js																							Cart Functionality											Next.js																																												
+

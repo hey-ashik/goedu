@@ -1,0 +1,74 @@
+[
+ {
+  "title": "Become and Instructor",
+  "link": "/become-a-teacher",
+  "position_name": "Middle",
+  "position": 2,
+  "sort_order": 9,
+  "is_published": 1
+ },
+ {
+  "title": "User Guidelines",
+  "link": "/user-guidelines",
+  "position_name": "Middle",
+  "position": 2,
+  "sort_order": 8,
+  "is_published": 1
+ },
+ {
+  "title": "DIU OSOL Program",
+  "link": "/diu-osol-program",
+  "position_name": "Middle",
+  "position": 2,
+  "sort_order": 7,
+  "is_published": 1
+ },
+ {
+  "title": "Accreditations",
+  "link": "/accreditations",
+  "position_name": "Left",
+  "position": 1,
+  "sort_order": 3,
+  "is_published": 1
+ },
+ {
+  "title": "Privacy Policy",
+  "link": "/privacy-policy",
+  "position_name": "Right",
+  "position": 3,
+  "sort_order": 4,
+  "is_published": 1
+ },
+ {
+  "title": "Terms and Conditions",
+  "link": "/terms-and-conditions",
+  "position_name": "Right",
+  "position": 3,
+  "sort_order": 5,
+  "is_published": 1
+ },
+ {
+  "title": "Refund Policy",
+  "link": "/refund-policy",
+  "position_name": "Right",
+  "position": 3,
+  "sort_order": 6,
+  "is_published": 1
+ },
+ {
+  "title": "About Us",
+  "link": "/about-us",
+  "position_name": "Left",
+  "position": 1,
+  "sort_order": 1,
+  "is_published": 1
+ },
+ {
+  "title": "News & articles",
+  "link": "/blog",
+  "position_name": "Left",
+  "position": 1,
+  "sort_order": 10,
+  "is_published": 1
+ }
+]

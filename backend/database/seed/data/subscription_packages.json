@@ -1,0 +1,41 @@
+[
+ {
+  "id": 1,
+  "title": "Monthly",
+  "package_choice": "month",
+  "duration": 1,
+  "price": 1000,
+  "is_discount": 1,
+  "discount_price": 699,
+  "save_amount": 301,
+  "save_percentage": 30.1,
+  "perks": [
+   "Access to 60+ premium courses—and growing",
+   "Higher limits to AI Mentor for custom guidance and course",
+   "Access to member exclusive micro-courses (+2 New/month guaranteed)",
+   "Access to member exclusive downloadable resources (+2 New/month guaranteed)",
+   "20% discount on any premium courses outside of subscription library",
+   "Instant access, cancel anytime"
+  ]
+ },
+ {
+  "id": 2,
+  "title": "Yearly",
+  "package_choice": "year",
+  "duration": 12,
+  "price": 12000,
+  "is_discount": 1,
+  "discount_price": 6990,
+  "save_amount": 5010,
+  "save_percentage": 41.75,
+  "perks": [
+   "Access to 60+ premium courses—and growing",
+   "Higher limits to AI Mentor for custom guidance and course",
+   "Access to member exclusive micro-courses (+2 New/month guaranteed)",
+   "Access to member exclusive downloadable resources (+2 New/month guaranteed)",
+   "20% discount on any premium courses outside of subscription library",
+   "Price discounted that makes two months free subscription",
+   "Instant access, cancel anytime"
+  ]
+ }
+]
