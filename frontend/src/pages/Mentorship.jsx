@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowRight, Calendar, ChevronDown, ChevronLeft, CircleCheck, Clock, LayoutGrid, List, MessageSquare, Mic, PhoneOff, Search, Share2, ShieldCheck, SlidersHorizontal, Star, Video, Zap } from 'lucide-react';
+import { ArrowRight, Building2, Calendar, ChevronDown, ChevronLeft, CircleCheck, Clock, LayoutGrid, List, MessageSquare, Mic, PhoneOff, Search, Share2, ShieldCheck, SlidersHorizontal, Star, Video, Zap } from 'lucide-react';
 import Seo from '../components/common/Seo';
 import { EmptyState } from '../components/common/ui';
 import { Taka } from '../components/common/CourseCard';
@@ -22,7 +22,7 @@ function TabletDemo() {
     <div className="relative flex justify-center items-center py-4 [perspective:1000px] w-full">
       <div aria-hidden="true" className="absolute -inset-6 bg-gradient-to-tr from-[#ED8E22]/30 via-[#F3AC08]/20 to-amber-100/50 rounded-full blur-3xl opacity-75" />
       <div className="absolute bottom-1 w-[80%] sm:w-[480px] h-10 bg-black/40 rounded-full blur-xl pointer-events-none" />
-      <div className="relative z-10 w-full max-w-[520px] aspect-[520/380] rounded-[32px] border-[10px] sm:border-[12px] border-gray-900 bg-gray-950 shadow-[24px_32px_55px_-12px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col select-none animate-3d-tablet">
+      <div className="relative z-10 w-full max-w-[520px] aspect-[520/380] rounded-[32px] border-[10px] sm:border-[12px] border-gray-900 bg-gray-950 shadow-[24px_32px_55px_-12px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col select-none sm:animate-3d-tablet">
         <div className="w-full bg-gray-950 py-1.5 px-4 flex items-center justify-between z-40 border-b border-gray-900">
           <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-red-500/80" /><div className="w-2 h-2 rounded-full bg-amber-500/80" /><div className="w-2 h-2 rounded-full bg-emerald-500/80" /></div>
           <div className="w-3 h-3 rounded-full bg-black border border-gray-800 flex items-center justify-center"><div className="w-1 h-1 rounded-full bg-blue-900/60" /></div>
@@ -118,26 +118,83 @@ function TabletDemo() {
   );
 }
 
+/** Mentor card - same structure and styling as the goedu.ac mentorship directory (grid + list layouts). */
 export function MentorCard({ m, list = false }) {
-  return (
-    <article className={cn('rounded-2xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 space-y-4 hover:shadow-xl hover:border-[#F3AC08]/40 transition-all flex flex-col', list && 'md:flex-row md:items-center md:gap-6 md:space-y-0')}>
-      <div className="flex items-center gap-4">
-        <img src={img(m.photo)} alt={m.name} className="w-16 h-16 rounded-2xl object-cover bg-gray-100 shrink-0" />
-        <div className="min-w-0">
-          <h3 className="font-extrabold text-gray-900 dark:text-white flex items-center gap-1 truncate">{m.name} <ShieldCheck className="w-4 h-4 text-[#F3AC08] shrink-0" /></h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{m.designation}{m.institute_name ? ` · ${m.institute_name}` : ''}</p>
-          <div className="flex items-center gap-1 mt-1 text-xs"><Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /><span className="font-bold text-gray-700 dark:text-gray-200">{m.mentor_rating.toFixed(1)}</span><span className="text-gray-400">({m.mentor_reviews} reviews)</span></div>
+  const about = (m.about || '').replace(/<[^>]*>/g, '').trim();
+  const role = m.specialist || m.designation || null;
+  const institute = (m.institute_name || '').trim() || null;
+  const price = m.session_price !== null && m.session_price !== undefined ? Number(m.session_price) : null;
+  const Photo = (
+    <div className="relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 bg-gray-100 dark:bg-gray-700 border border-gray-100 dark:border-gray-700">
+      <img src={img(m.photo)} alt={m.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+      <span className="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-white dark:border-gray-800" />
+    </div>
+  );
+  const Identity = (
+    <div className="min-w-0 flex-1">
+      <div className="flex items-center gap-1.5">
+        <h3 className="text-lg font-bold text-[#001858] dark:text-white truncate group-hover:text-[#F3AC08] transition-colors">{m.name}</h3>
+        <ShieldCheck className="w-5 h-5 text-[#F3AC08] shrink-0" />
+      </div>
+      {role && <p className="text-sm font-medium text-gray-600 dark:text-gray-300 mt-0.5 truncate">{role}</p>}
+      {institute && <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 flex items-center gap-1.5 truncate"><Building2 className="w-3.5 h-3.5 shrink-0" /><span className="truncate">{institute}</span></p>}
+    </div>
+  );
+  const Category = m.mentor_category ? (
+    <div className={cn('flex flex-wrap gap-2', list ? 'mt-3' : 'mt-4')}>
+      <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gray-100 dark:bg-gray-700/60 text-gray-700 dark:text-gray-200 rounded-xl text-xs font-semibold"><Star className="w-3.5 h-3.5 text-[#F3AC08]" />{m.mentor_category}</span>
+    </div>
+  ) : null;
+  const Availability = (
+    <div className={cn('flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400 font-medium', list ? 'mt-3 pt-3 border-t border-gray-100 dark:border-gray-700/60' : 'mt-4')}>
+      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /><span>Available for 1:1 Mentorship</span>
+    </div>
+  );
+  const Price = (
+    <div className={list ? '' : 'mb-4'}>
+      <p className="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider">Starting from</p>
+      <p className="text-2xl font-black text-[#001858] dark:text-white mt-0.5">
+        {price > 0 ? <><Taka />{formatPrice(price)}<span className="text-xs font-normal text-gray-400 ml-0.5">/session</span></> : <span className="text-emerald-600 dark:text-emerald-400 text-xl font-bold">Free Consultation</span>}
+      </p>
+    </div>
+  );
+  const Actions = (
+    <div className={cn('grid gap-3', list ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-1 mt-4' : 'grid-cols-2')}>
+      <Link to={`/instructor/${m.slug}`} className="py-3 px-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-sm font-bold text-center hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">View Profile</Link>
+      <Link to={`/mentorship/${m.slug}`} className="py-3 px-4 rounded-2xl bg-[#F3AC08] hover:bg-[#d89a07] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-[#F3AC08]/20 transition-all active:scale-[0.98]"><Calendar className="w-4 h-4" />Book Session</Link>
+    </div>
+  );
+
+  if (list) {
+    return (
+      <article className="group bg-white dark:bg-gray-800 rounded-[28px] border border-gray-100 dark:border-gray-700 p-5 sm:p-6 hover:shadow-xl hover:border-gray-200 dark:hover:border-gray-600 transition-all duration-300 flex flex-col md:flex-row gap-6 justify-between">
+        <div className="flex-1 min-w-0 flex flex-col sm:flex-row gap-5">
+          {Photo}
+          <div className="flex-1 min-w-0">
+            {Identity}
+            {Category}
+            {about && <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2 mt-3">{about}</p>}
+            {Availability}
+          </div>
         </div>
+        <div className="md:w-56 shrink-0 flex flex-col justify-between pt-4 md:pt-0 md:pl-6 border-t md:border-t-0 md:border-l border-gray-100 dark:border-gray-700">
+          {price !== null && Price}
+          {Actions}
+        </div>
+      </article>
+    );
+  }
+  return (
+    <article className="group bg-white dark:bg-gray-800 rounded-[28px] border border-gray-100 dark:border-gray-700 p-5 sm:p-6 hover:shadow-xl hover:-translate-y-1 hover:border-gray-200 dark:hover:border-gray-600 transition-all duration-300 flex flex-col justify-between h-full">
+      <div>
+        <div className="flex items-start gap-4">{Photo}{Identity}</div>
+        {Category}
+        {about && <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-2 mt-4">{about}</p>}
+        {Availability}
       </div>
-      <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 flex-1">{m.about}</p>
-      <div className="flex flex-wrap gap-2">{m.specialties.slice(0, 3).map((s) => <span key={s} className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-amber-50 dark:bg-gray-700 text-[#b57d05] dark:text-amber-300">{s}</span>)}</div>
-      <div className="bg-gray-50 dark:bg-gray-900/60 rounded-xl p-3 flex items-center justify-between text-xs">
-        <span className="flex items-center gap-1 text-gray-600 dark:text-gray-300"><Clock className="w-3.5 h-3.5 text-[#F3AC08]" /> {m.session_minutes}-min session</span>
-        <span className="font-extrabold text-gray-900 dark:text-white">{m.session_price ? <><Taka />{formatPrice(m.session_price)}</> : 'Free'} <span className="text-gray-400 font-normal">/ session</span></span>
-      </div>
-      <div className="flex gap-2 pt-1">
-        <Link to={`/mentorship/${m.slug}`} className="flex-1 h-10 rounded-xl bg-[#F3AC08] text-white text-sm font-bold flex items-center justify-center hover:bg-[#d89a07]">Book Session</Link>
-        <Link to={`/instructor/${m.slug}`} className="flex-1 h-10 rounded-xl border border-gray-200 dark:border-gray-600 text-sm font-bold text-gray-700 dark:text-gray-200 flex items-center justify-center hover:border-[#F3AC08] hover:text-[#F3AC08]">View Profile</Link>
+      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+        {price !== null && Price}
+        {Actions}
       </div>
     </article>
   );
@@ -180,7 +237,7 @@ export default function Mentorship() {
                 {['Verified Experts', '1:1 Live Consultations', 'Flexible Booking'].map((t) => <div key={t} className="flex items-center gap-2"><CircleCheck className="w-4 h-4 text-[#F3AC08]" /><span>{t}</span></div>)}
               </div>
             </div>
-            <div className="lg:col-span-6 relative flex justify-center items-center mt-6 lg:mt-0"><TabletDemo /></div>
+            <div className="lg:col-span-6 relative flex justify-center items-center mt-6 lg:mt-0 overflow-hidden px-2"><TabletDemo /></div>
           </div>
         </div>
       </div>

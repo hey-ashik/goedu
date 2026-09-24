@@ -23,8 +23,8 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen bg-[#FFFCF6] dark:bg-gray-900 pt-24 pb-16">
       <Seo title="Dashboard" noIndex />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[260px_1fr] gap-8">
-        <aside className="lg:sticky lg:top-28 lg:self-start">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)] gap-6 lg:gap-8">
+        <aside className="min-w-0 lg:sticky lg:top-28 lg:self-start">
           <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 mb-4 flex items-center gap-3">
             {user.photo ? <img src={user.photo} alt={user.name} className="w-12 h-12 rounded-full object-cover" /> : <span className="w-12 h-12 rounded-full bg-amber-400 text-white font-bold text-lg flex items-center justify-center">{initials(user.name)}</span>}
             <div className="min-w-0"><p className="font-bold text-gray-900 dark:text-white truncate">{user.name}</p><p className="text-xs text-gray-500 truncate">{user.email}</p>{user.subscription && <span className="inline-block mt-1 text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Learner Plus</span>}</div>

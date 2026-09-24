@@ -211,8 +211,8 @@ export default function CourseDetail() {
       <div className="container mx-auto px-4 md:px-8 -mt-5 lg:-mt-18 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-8 lg:mt-12">
-            <div className="fixed bottom-0 left-0 right-0 lg:sticky lg:top-[5.3rem] lg:py-2 z-40 lg:z-30 border-t lg:border-t-0 lg:border-b border-gray-200 dark:border-gray-700 lg:mb-8 rounded-t-xl lg:rounded-none px-4 lg:px-0 overflow-x-auto no-scrollbar bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] lg:shadow-none">
-              <div className="flex items-center gap-8 min-w-max lg:justify-start justify-center mx-auto lg:mx-0 max-w-7xl">
+            <div className="sticky top-[4.4rem] lg:top-[5.3rem] py-1 lg:py-2 z-30 border-b border-gray-200 dark:border-gray-700 mb-6 lg:mb-8 -mx-4 px-4 lg:mx-0 lg:px-0 overflow-x-auto no-scrollbar bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm">
+              <div className="flex items-center gap-4 sm:gap-8 min-w-max lg:justify-start mx-auto lg:mx-0 max-w-7xl">
                 {TABS.map((t) => (
                   <button key={t.id} onClick={() => goTo(t.id)} className={cn('py-4 px-4 lg:py-2.5 text-sm font-bold transition-all whitespace-nowrap', active === t.id ? 'text-[#F3AC08]' : 'text-[#373737] dark:text-gray-300 hover:text-[#F3AC08]')}>{t.label}</button>
                 ))}

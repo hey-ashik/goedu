@@ -94,15 +94,10 @@
   "specialist": "Business, Entrepreneurship, Leadership",
   "about": "Dr. Md. Sabur Khan is Chairman at Daffodil Group and teaches Business & Entrepreneurship on GoEdu.",
   "is_featured": 1,
-  "is_mentor": 1,
+  "is_mentor": 0,
   "sort_order": 4,
   "featured_topic": "Business & Entrepreneurship",
-  "promo_video": "https://devadmin.goedu.ac/media/video/Dr._Md._Sabur_Khan_Instructor_Promo.mp4",
-  "mentor_category": "Entrepreneurship",
-  "session_price": 1500,
-  "session_minutes": 45,
-  "mentor_rating": 5,
-  "mentor_reviews": 0
+  "promo_video": "https://devadmin.goedu.ac/media/video/Dr._Md._Sabur_Khan_Instructor_Promo.mp4"
  },
  {
   "id": 8,
@@ -227,15 +222,10 @@
   "specialist": "Social Business, Marketing, Management",
   "about": "Professor Dr. Mohammed Masum Iqbal is Pro Vice Chancellor at Daffodil International University and teaches Social Business & Marketing on GoEdu.",
   "is_featured": 1,
-  "is_mentor": 1,
+  "is_mentor": 0,
   "sort_order": 3,
   "featured_topic": "Social Business & Marketing",
-  "promo_video": "https://devadmin.goedu.ac/media/video/Instructor_Promo_Prof._Dr._Masum_Iqbal.mp4",
-  "mentor_category": "Business & Marketing",
-  "session_price": 1500,
-  "session_minutes": 45,
-  "mentor_rating": 5,
-  "mentor_reviews": 0
+  "promo_video": "https://devadmin.goedu.ac/media/video/Instructor_Promo_Prof._Dr._Masum_Iqbal.mp4"
  },
  {
   "id": 17,
@@ -1368,15 +1358,10 @@
   "specialist": "Employability, Business Skills, Career Development",
   "about": "Dr. K M Hasan Ripon is Executive Director at Daffodil Skills and Employment Ecosystem and teaches Employability and Business Skills on GoEdu.",
   "is_featured": 1,
-  "is_mentor": 1,
+  "is_mentor": 0,
   "sort_order": 2,
   "featured_topic": "Employability and Business Skills",
-  "promo_video": "https://devadmin.goedu.ac/media/video/Instructor_Promo_Dr._K_M_Hasan_Ripon.mp4",
-  "mentor_category": "Career Growth",
-  "session_price": 1500,
-  "session_minutes": 45,
-  "mentor_rating": 5,
-  "mentor_reviews": 0
+  "promo_video": "https://devadmin.goedu.ac/media/video/Instructor_Promo_Dr._K_M_Hasan_Ripon.mp4"
  },
  {
   "id": 98,
@@ -1851,15 +1836,10 @@
   "specialist": "Artificial Intelligence, Data Science, Machine Learning",
   "about": "Nuruzzaman Faruqui is Assistant Professor at Daffodil International University and teaches Artificial Intelligence and Data Science on GoEdu.",
   "is_featured": 1,
-  "is_mentor": 1,
+  "is_mentor": 0,
   "sort_order": 1,
   "featured_topic": "Artificial Intelligence and Data Science",
-  "promo_video": "https://devadmin.goedu.ac/media/video/Instructor_Promo_Mr._Nuruzzaman_Faruqui.mp4",
-  "mentor_category": "AI & Data Science",
-  "session_price": 1500,
-  "session_minutes": 45,
-  "mentor_rating": 5,
-  "mentor_reviews": 0
+  "promo_video": "https://devadmin.goedu.ac/media/video/Instructor_Promo_Mr._Nuruzzaman_Faruqui.mp4"
  },
  {
   "id": 132,
@@ -2412,7 +2392,7 @@
   "name": "Khondker Mohammad Shah - Al - Mamun",
   "slug": "khondker-md-shah-al-mamun-OXeu",
   "is_featured": 0,
-  "sort_order": 10,
+  "sort_order": 1,
   "email": "samamun@daffodilvarsity.edu.bd",
   "photo": "/images/instructors/khondker-shah-al-mamun.jpeg",
   "designation": "Joint Director",
@@ -2420,7 +2400,7 @@
   "specialist": "Edtech, Problem Solving, Innovation Management, Career Progression, Leadership",
   "about": "Experienced professional with 16+ years of guiding teams and driving organizational growth through strategic vision and collaborative leadership. I specialize in empowering teams, optimizing workflows, and delivering impactful solutions that blend technology, education, and innovation. Passionate about fostering a culture of growth and adaptability, I focus on creating scalable strategies that empower organizations to achieve their goals. Dedicated to collaboration, innovation, and turning ideas into meaningful results. Let’s connect to explore opportunities for impactful partnerships and growth.",
   "is_mentor": 1,
-  "mentor_category": "Leadership & Career",
+  "mentor_category": null,
   "session_price": 500,
   "session_minutes": 45,
   "mentor_rating": 5,

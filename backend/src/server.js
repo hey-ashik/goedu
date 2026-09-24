@@ -17,6 +17,8 @@ async function prepareDatabase() {
     const seed = require('../database/seed/seed');
     await seed();
   }
+  // mentor flags follow seed/data/instructors.json even on an already seeded database
+  try { await require('../database/seed/syncMentors')(); } catch (err) { console.error('[setup] mentor sync skipped:', err.message); }
 }
 
 async function start() {
