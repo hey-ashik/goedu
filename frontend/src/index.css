@@ -16,13 +16,14 @@
     color-scheme: dark;
   }
   html {
+    overflow-x: clip;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
   body {
     @apply font-inter text-gray-900 dark:text-gray-100 antialiased bg-[#FFFCF6] dark:bg-gray-900 transition-colors duration-300;
     font-family: Inter, var(--font-fallback);
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   img {
     @apply max-w-full;
