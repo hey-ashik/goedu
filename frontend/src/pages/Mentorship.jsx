@@ -160,8 +160,8 @@ export function MentorCard({ m, list = false }) {
   );
   const Actions = (
     <div className={cn('grid gap-3', list ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-1 mt-4' : 'grid-cols-2')}>
-      <Link to={`/instructor/${m.slug}`} className="py-3 px-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-sm font-bold text-center hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">View Profile</Link>
-      <Link to={`/mentorship/${m.slug}`} className="py-3 px-4 rounded-2xl bg-[#F3AC08] hover:bg-[#d89a07] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-[#F3AC08]/20 transition-all active:scale-[0.98]"><Calendar className="w-4 h-4" />Book Session</Link>
+      <Link to={`/instructor/${m.slug}`} className="py-3 px-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-sm font-bold text-center whitespace-nowrap hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">View Profile</Link>
+      <Link to={`/mentorship/${m.slug}`} className="py-3 px-3 rounded-2xl bg-[#F3AC08] hover:bg-[#d89a07] text-white text-sm font-bold flex items-center justify-center gap-1.5 whitespace-nowrap shadow-md shadow-[#F3AC08]/20 transition-all active:scale-[0.98]"><Calendar className="w-4 h-4 shrink-0" />Book Session</Link>
     </div>
   );
 
