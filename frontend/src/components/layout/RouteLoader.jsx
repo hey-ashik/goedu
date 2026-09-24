@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PageLoader from '../common/PageLoader';
 
@@ -33,7 +33,9 @@ export default function RouteLoader() {
     ];
   };
 
-  useEffect(() => {
+  // useLayoutEffect: the overlay is committed before the browser paints the new
+  // route, so the animation is visible first and the page appears underneath it.
+  useLayoutEffect(() => {
     const show = firstRender.current || isSection(pathname);
     firstRender.current = false;
     if (show) play();

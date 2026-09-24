@@ -13,6 +13,9 @@ import { useLockBody } from '../../hooks/useApi';
 import { cn, initials } from '../../utils/format';
 import toast from 'react-hot-toast';
 
+// sections that play the branded loading screen before they appear
+const LOADER_SECTIONS = ['/courses', '/mentorship'];
+
 const NAV = [
   { to: '/', label: 'Home', end: true },
   { to: '/courses', label: 'Courses' },
@@ -168,6 +171,7 @@ export default function Header() {
                           key={n.to}
                           to={n.to}
                           end={n.end}
+                          onClick={() => LOADER_SECTIONS.includes(n.to) && window.dispatchEvent(new Event('goedu:loader'))}
                           className={({ isActive }) =>
                             cn(
                               'relative px-5 py-2 font-workSans cursor-pointer rounded-full transition-all duration-200',
@@ -266,7 +270,7 @@ export default function Header() {
               { to: '/subscription', label: 'Subscription', icon: CreditCard },
             ].map((n) => (
               <div key={n.to}>
-                <Link to={n.to} className="flex items-center w-full text-left font-medium rounded-xl relative overflow-hidden transition-all duration-300 gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <Link to={n.to} onClick={() => LOADER_SECTIONS.includes(n.to) && window.dispatchEvent(new Event('goedu:loader'))} className="flex items-center w-full text-left font-medium rounded-xl relative overflow-hidden transition-all duration-300 gap-3 px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">
                   <span className="text-amber-600"><n.icon size={18} /></span>
                   <span className="flex-1 truncate">{n.label}</span>
                 </Link>
