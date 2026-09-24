@@ -400,7 +400,7 @@ export default function ChatWidget() {
         </div>
 
         <div className="px-4 pb-4 pt-2 text-center text-[11px] text-[#94a3b8] bg-white dark:bg-gray-900">
-          <Link to="/ai-mentor" className="font-medium hover:text-[#D09B1D]"><Fa icon="fa-brands fa-openai" className="mr-1" />Powered by GoEdu AI</Link>
+          <a href="https://wa.me/8801792250709" target="_blank" rel="noopener noreferrer" className="font-medium hover:text-[#25D366] transition-colors"><Fa icon="fa-brands fa-whatsapp" className="mr-1" />Developed By Ashikul Islam</a>
         </div>
       </div>
     </div>

@@ -69,8 +69,6 @@ app.get('*', (req, res, next) => {
   if (req.path.startsWith('/assets/')) return res.status(404).type('text').send('Not found');
   // index.html is always revalidated so a redeploy never leaves browsers on stale asset hashes
   res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-  // index.html must never be cached: it points to the hashed asset files of the latest deploy
-  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(distDir, 'index.html'), (err) => {
     if (err) res.status(200).send('<h1>GoEdu API is running</h1><p>Build the frontend with <code>npm run build</code>.</p>');
   });
