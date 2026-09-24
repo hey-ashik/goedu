@@ -9,6 +9,10 @@ import PageLoader from '../common/PageLoader';
  *   3. when the visitor enters the Mentorship section (/mentorship),
  *   4. when the GoEdu logo in the header is clicked (custom 'goedu:loader' event).
  * Every other navigation renders instantly without the animation.
+ *
+ * The timers are derived from the `phase` state (not kept in refs) so React's
+ * StrictMode double-mount in development re-arms them instead of losing them,
+ * which previously left the overlay on screen forever on localhost.
  */
 const SHOW_MS = 650; // fully visible
 const FADE_MS = 250; // fade-out (matches .page-loader-leave in index.css)
@@ -20,18 +24,22 @@ export default function RouteLoader() {
   const { pathname } = useLocation();
   const firstRender = useRef(true);
   const [phase, setPhase] = useState('visible'); // 'visible' | 'leaving' | 'hidden'
+  const [run, setRun] = useState(0); // bumped to restart the animation while it is already visible
 
-  const timers = useRef([]);
-  const playing = useRef(false);
-  const play = () => {
-    timers.current.forEach(clearTimeout);
-    playing.current = true;
-    setPhase('visible');
-    timers.current = [
-      setTimeout(() => setPhase('leaving'), SHOW_MS),
-      setTimeout(() => { playing.current = false; setPhase('hidden'); }, SHOW_MS + FADE_MS),
-    ];
-  };
+  const play = () => { setPhase('visible'); setRun((r) => r + 1); };
+
+  // phase machine: visible -(SHOW_MS)-> leaving -(FADE_MS)-> hidden
+  useEffect(() => {
+    if (phase === 'visible') {
+      const t = setTimeout(() => setPhase('leaving'), SHOW_MS);
+      return () => clearTimeout(t);
+    }
+    if (phase === 'leaving') {
+      const t = setTimeout(() => setPhase('hidden'), FADE_MS);
+      return () => clearTimeout(t);
+    }
+    return undefined;
+  }, [phase, run]);
 
   // useLayoutEffect: the overlay is committed before the browser paints the new
   // route, so the animation is visible first and the page appears underneath it.
@@ -39,16 +47,21 @@ export default function RouteLoader() {
     const show = firstRender.current || isSection(pathname);
     firstRender.current = false;
     if (show) play();
-    else if (!playing.current) setPhase('hidden'); // keep a logo-triggered animation running across the route change
+    // any other navigation: leave a running animation alone, otherwise stay hidden
   }, [pathname]);
-
-  useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
   // header logo click -> play the animation even when already on the home page
   useEffect(() => {
     window.addEventListener('goedu:loader', play);
     return () => window.removeEventListener('goedu:loader', play);
   }, []);
+
+  // safety net: whatever happens, never keep the site covered for more than a few seconds
+  useEffect(() => {
+    if (phase === 'hidden') return undefined;
+    const t = setTimeout(() => setPhase('hidden'), 4000);
+    return () => clearTimeout(t);
+  }, [phase, run]);
 
   if (phase === 'hidden') return null;
   return (
