@@ -29,7 +29,7 @@ async function insertMany(conn, table, columns, rows, chunk = 200) {
   }
 }
 
-async function seed() {
+async function seed({ closePool = false } = {}) {
   const conn = await pool.getConnection();
   try {
     console.log('[seed] clearing catalogue tables...');
@@ -131,9 +131,9 @@ async function seed() {
     await insertMany(conn, 'pages', ['slug', 'title', 'content'], pages);
     console.log('[seed] pages:', pages.length);
 
-    // ---------- demo learner ----------
+    // ---------- optional demo learner (SEED_DEMO_USER=true) ----------
     const [existing] = await conn.query('SELECT id FROM users WHERE email = ?', ['demo@goedu.ac']);
-    if (!existing.length) {
+    if (String(process.env.SEED_DEMO_USER).toLowerCase() === 'true' && !existing.length) {
       const hash = await bcrypt.hash('Demo@1234', 10);
       await conn.query('INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)', ['Demo Learner', 'demo@goedu.ac', hash, 'learner']);
       console.log('[seed] demo user: demo@goedu.ac / Demo@1234');
@@ -142,12 +142,12 @@ async function seed() {
     console.log('[seed] done.');
   } finally {
     conn.release();
-    await pool.end();
+    if (closePool) await pool.end();
   }
 }
 
 if (require.main === module) {
-  seed().catch((err) => {
+  seed({ closePool: true }).catch((err) => {
     console.error('[seed] failed:', err);
     process.exit(1);
   });

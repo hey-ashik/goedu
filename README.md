@@ -41,7 +41,7 @@ goedu/
 - Course detail page: curriculum (sections & lessons), what you learn, instructor, reviews, sticky buy card
 - Bundles, Mentorship (mentor directory + 1:1 booking), Learner Plus subscription (monthly / yearly),
   Blog with comments, About, Contact, Become an instructor, policy pages
-- Authentication (JWT), cart (guest + user, merged on login), checkout, enrolments, wishlist, orders
+- Authentication (JWT, bcrypt) with all accounts in MySQL, cart (guest + user, merged on login), checkout with SSLCommerz (sandbox/live) or direct enrolment, enrolments, wishlist, orders
 - Learner dashboard: overview, my learning + course player with progress, purchases, wishlist,
   mentor sessions, subscription resources, micro courses, profile
 - AI Mentor chatbot (Groq, `openai/gpt-oss-120b`) that recommends real courses from the catalogue.
@@ -66,7 +66,7 @@ npm run db:setup
 npm run dev
 ```
 
-Demo learner account: `demo@goedu.ac` / `Demo@1234`
+Tables and seed data are also created automatically on the first server start (`AUTO_MIGRATE=true`). Set `SEED_DEMO_USER=true` to get a demo learner `demo@goedu.ac` / `Demo@1234`.
 
 ## Production build
 
@@ -88,6 +88,8 @@ The Express server serves `frontend/dist` for every non-API route, so a single N
 | `JWT_SECRET`, `JWT_EXPIRES_IN` | Auth token signing |
 | `GROQ_API_KEY`, `GROQ_MODEL` | Groq API key and model (`openai/gpt-oss-120b`) |
 | `CHAT_LIMIT`, `CHAT_WINDOW_MINUTES` | Chatbot quota per user (default 10 / 30) |
+| `SSLCOMMERZ_STORE_ID`, `SSLCOMMERZ_STORE_PASSWORD`, `SSLCOMMERZ_SANDBOX` | Payment gateway (empty = direct enrolment mode) |
+| `AUTO_MIGRATE`, `SEED_DEMO_USER` | Create tables/seed on boot; optional demo account |
 
 ## API overview (`/api/v1`)
 
@@ -99,15 +101,16 @@ The Express server serves `frontend/dist` for every non-API route, so a single N
 | Mentorship | `GET /mentorship/mentors`, `GET /mentorship/categories`, `GET /mentorship/mentors/:slug`, `GET/POST /mentorship/bookings` |
 | Blog | `GET /articles`, `GET /articles/categories`, `GET /articles/trending`, `GET /articles/:slug`, `POST /articles/:slug/comments` |
 | Site | `GET /site/settings`, `GET /site/home`, `GET /site/testimonials`, `GET /site/pages/:slug`, `POST /site/newsletter`, `POST /site/contact`, `POST /site/apply-instructor` |
-| Commerce | `GET/POST/DELETE /cart`, `GET /wishlist`, `POST /wishlist/toggle`, `GET /orders`, `POST /orders/checkout`, `POST /orders/enroll-free` |
+| Commerce | `GET/POST/DELETE /cart`, `GET /wishlist`, `POST /wishlist/toggle`, `GET /orders`, `GET /orders/:orderNumber`, `POST /orders/checkout`, `POST /orders/enroll-free`, `POST /payments/sslcommerz/{success,fail,cancel,ipn}` |
 | Subscription | `GET /subscription/packages`, `GET /subscription/library`, `POST /subscription/subscribe`, `POST /subscription/cancel` |
 | Learning | `GET /learning`, `GET /learning/:slug`, `POST /learning/:slug/progress`, `POST /reviews` |
 | AI Mentor | `GET /chat/status`, `GET /chat/history`, `POST /chat/new`, `POST /chat` |
 
 ## Notes
 
-- Payments: checkout currently uses a demo gateway that marks orders as paid instantly.
-  Connect SSLCommerz / bKash in `backend/src/controllers/order.controller.js` for live payments.
+- Payments: with SSLCommerz credentials the customer is redirected to the hosted gateway and the order is
+  fulfilled only after server-side validation; without credentials orders are fulfilled directly so the shop
+  works before the merchant account is approved.
 - Course curricula: section titles, the first section's lessons and free-preview flags come from the
   public course pages; remaining lessons are structural placeholders named `<Section> - Lesson N`
   so every course matches its published lesson count. Replace them with real lesson titles / video URLs

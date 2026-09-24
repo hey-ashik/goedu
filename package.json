@@ -1,12 +1,13 @@
 {
   "name": "goedu",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "GoEdu - Online Courses in Bangladesh with Certificates. Full-stack LMS (React + Tailwind frontend, Node.js/Express + MySQL backend).",
   "main": "backend/src/server.js",
   "scripts": {
-    "install:all": "npm install --prefix backend && npm install --prefix frontend",
-    "build": "npm install --prefix backend --omit=dev && npm install --prefix frontend && npm run build --prefix frontend",
+    "postinstall": "npm install --prefix backend --omit=dev --no-audit --no-fund && npm install --prefix frontend --include=dev --no-audit --no-fund && npm run build --prefix frontend",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend --include=dev",
+    "build": "npm run build --prefix frontend",
     "start": "node backend/src/server.js",
     "dev": "concurrently -n api,web -c blue,yellow \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
     "dev:backend": "npm run dev --prefix backend",

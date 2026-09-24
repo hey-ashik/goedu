@@ -1,49 +1,50 @@
 const { query, queryOne, transaction } = require('../config/db');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
+const publicUrl = require('../utils/publicUrl');
 const { loadCart } = require('./cart.controller');
+const sslcommerz = require('../services/sslcommerz.service');
+const { fulfilOrder, markFailed, newOrderNumber } = require('../services/order.service');
 
 /**
- * POST /orders/checkout
- * Creates an order from the cart and enrolls the learner.
- * Payment: this build uses a demo gateway (`payment_method: 'demo'`) that marks the
- * order as paid instantly. Plug SSLCommerz in `services/payment.service.js` later.
+ * Starts payment for a pending order.
+ *  - total 0                -> fulfilled immediately (free items)
+ *  - SSLCommerz configured  -> returns gateway_url for redirection
+ *  - not configured         -> direct enrolment (so the shop works before the merchant account is approved)
  */
+async function startPayment(req, res, order, productName) {
+  const siteUrl = publicUrl(req);
+  if (Number(order.total) <= 0) {
+    const r = await fulfilOrder(order.id, { transactionId: 'FREE-' + order.order_number, paymentMethod: 'free' });
+    return res.status(201).json({ success: true, paid: true, message: 'You are now enrolled!', order: { order_number: order.order_number, total: 0, enrolled: r.enrolled } });
+  }
+  if (sslcommerz.enabled()) {
+    const { gatewayUrl } = await sslcommerz.initPayment({ order, user: req.user, siteUrl, apiUrl: `${siteUrl}/api/v1`, productName });
+    return res.status(201).json({ success: true, paid: false, gateway_url: gatewayUrl, order: { order_number: order.order_number, total: Number(order.total) } });
+  }
+  const r = await fulfilOrder(order.id, { transactionId: 'DIRECT-' + order.order_number, paymentMethod: 'direct' });
+  return res.status(201).json({ success: true, paid: true, message: 'Payment recorded. You are now enrolled!', order: { order_number: order.order_number, total: Number(order.total), enrolled: r.enrolled } });
+}
+
+/** POST /orders/checkout - creates a pending order from the cart and starts payment */
 const checkout = asyncHandler(async (req, res) => {
   const cart = await loadCart(req);
   if (!cart.items.length) throw ApiError.badRequest('Your cart is empty');
-
-  const result = await transaction(async (conn) => {
-    const orderNumber = 'GE-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random() * 900 + 100);
+  const order = await transaction(async (conn) => {
+    const orderNumber = newOrderNumber('GE');
     const [o] = await conn.query(
-      "INSERT INTO orders (order_number, user_id, subtotal, discount, total, payment_method, payment_status, transaction_id, paid_at) VALUES (?, ?, ?, ?, ?, ?, 'paid', ?, NOW())",
-      [orderNumber, req.user.id, cart.subtotal, cart.discount, cart.total, req.body.payment_method || 'sslcommerz', 'DEMO-' + orderNumber]
+      "INSERT INTO orders (order_number, user_id, subtotal, discount, total, payment_method, payment_status) VALUES (?, ?, ?, ?, ?, ?, 'pending')",
+      [orderNumber, req.user.id, cart.subtotal, cart.discount, cart.total, req.body.payment_method || 'sslcommerz']
     );
-    const orderId = o.insertId;
-    const enrolledCourses = [];
     for (const item of cart.items) {
-      if (item.type === 'course') {
-        await conn.query("INSERT INTO order_items (order_id, item_type, course_id, title, price) VALUES (?, 'course', ?, ?, ?)", [orderId, item.course_id, item.title, item.after_discount_price]);
-        await conn.query("INSERT IGNORE INTO enrollments (user_id, course_id, order_id, source) VALUES (?, ?, ?, ?)", [req.user.id, item.course_id, orderId, item.after_discount_price > 0 ? 'purchase' : 'free']);
-        enrolledCourses.push(item.course_id);
-      } else {
-        await conn.query("INSERT INTO order_items (order_id, item_type, bundle_id, title, price) VALUES (?, 'bundle', ?, ?, ?)", [orderId, item.bundle_id, item.title, item.after_discount_price]);
-        const [courses] = await conn.query('SELECT course_id FROM bundle_courses WHERE bundle_id = ?', [item.bundle_id]);
-        for (const bc of courses) {
-          await conn.query("INSERT IGNORE INTO enrollments (user_id, course_id, order_id, source) VALUES (?, ?, ?, 'bundle')", [req.user.id, bc.course_id, orderId]);
-          enrolledCourses.push(bc.course_id);
-        }
-        await conn.query('UPDATE bundles SET total_enroll = total_enroll + 1 WHERE id = ?', [item.bundle_id]);
-      }
+      await conn.query('INSERT INTO order_items (order_id, item_type, course_id, bundle_id, title, price) VALUES (?, ?, ?, ?, ?, ?)', [
+        o.insertId, item.type, item.type === 'course' ? item.course_id : null, item.type === 'bundle' ? item.bundle_id : null, item.title, item.after_discount_price,
+      ]);
     }
-    if (enrolledCourses.length) {
-      await conn.query(`UPDATE courses SET total_enroll = total_enroll + 1 WHERE id IN (${enrolledCourses.map(() => '?').join(',')})`, enrolledCourses);
-    }
-    await conn.query('DELETE FROM cart_items WHERE user_id = ?', [req.user.id]);
-    return { order_id: orderId, order_number: orderNumber, total: cart.total, enrolled: enrolledCourses.length };
+    return { id: o.insertId, order_number: orderNumber, total: cart.total };
   });
-
-  res.status(201).json({ success: true, message: 'Payment successful. You are now enrolled!', order: result });
+  const name = cart.items.length === 1 ? cart.items[0].title : `${cart.items.length} GoEdu courses`;
+  await startPayment(req, res, order, name);
 });
 
 /** POST /orders/enroll-free { course_id } - direct enrolment for free & subscription courses */
@@ -80,4 +81,52 @@ const list = asyncHandler(async (req, res) => {
   res.json({ success: true, results: [...byOrder.values()] });
 });
 
-module.exports = { checkout, enrollFree, list };
+/** GET /orders/:orderNumber - status of one of my orders (payment result page) */
+const status = asyncHandler(async (req, res) => {
+  const order = await queryOne('SELECT id, order_number, total, payment_status, payment_method, transaction_id, created_at, paid_at FROM orders WHERE order_number = ? AND user_id = ?', [req.params.orderNumber, req.user.id]);
+  if (!order) throw ApiError.notFound('Order not found');
+  const items = await query('SELECT item_type, title, price, course_id, bundle_id, package_id FROM order_items WHERE order_id = ?', [order.id]);
+  res.json({ success: true, order: { ...order, total: Number(order.total), items } });
+});
+
+// ---------------- SSLCommerz callbacks (public, called by the gateway) ----------------
+
+async function settle(req, res, outcome) {
+  const site = publicUrl(req);
+  const tranId = req.body.tran_id || req.query.tran_id;
+  const order = tranId ? await queryOne('SELECT id, order_number, total, payment_status FROM orders WHERE order_number = ?', [tranId]) : null;
+  if (!order) return res.redirect(`${site}/payment/failed`);
+  if (outcome === 'success') {
+    try {
+      const { valid, data } = await sslcommerz.validate(req.body.val_id || req.query.val_id);
+      const amountOk = !data.amount || Math.abs(Number(data.amount) - Number(order.total)) < 1;
+      if (valid && amountOk) {
+        await fulfilOrder(order.id, { transactionId: data.tran_id || tranId, paymentMethod: (data.card_issuer || 'sslcommerz').toString().slice(0, 60) });
+        return res.redirect(`${site}/payment/success?order=${encodeURIComponent(order.order_number)}`);
+      }
+    } catch (err) {
+      console.error('[sslcommerz] validation error:', err.message);
+    }
+    await markFailed(order.order_number, 'failed');
+    return res.redirect(`${site}/payment/failed?order=${encodeURIComponent(order.order_number)}`);
+  }
+  await markFailed(order.order_number, 'failed');
+  return res.redirect(`${site}/payment/${outcome === 'cancel' ? 'cancelled' : 'failed'}?order=${encodeURIComponent(order.order_number)}`);
+}
+
+const sslSuccess = asyncHandler((req, res) => settle(req, res, 'success'));
+const sslFail = asyncHandler((req, res) => settle(req, res, 'fail'));
+const sslCancel = asyncHandler((req, res) => settle(req, res, 'cancel'));
+
+/** POST /payments/sslcommerz/ipn - server to server notification */
+const sslIpn = asyncHandler(async (req, res) => {
+  const tranId = req.body.tran_id;
+  const order = tranId ? await queryOne('SELECT id, total FROM orders WHERE order_number = ?', [tranId]) : null;
+  if (order && req.body.status === 'VALID' && req.body.val_id) {
+    const { valid, data } = await sslcommerz.validate(req.body.val_id);
+    if (valid) await fulfilOrder(order.id, { transactionId: data.tran_id || tranId, paymentMethod: 'sslcommerz' });
+  }
+  res.json({ received: true });
+});
+
+module.exports = { checkout, enrollFree, list, status, sslSuccess, sslFail, sslCancel, sslIpn, startPayment };

@@ -33,7 +33,8 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: (origin, cb) => {
-      if (!origin || env.corsOrigins.includes(origin) || env.corsOrigins.includes('*')) return cb(null, true);
+      // same-origin requests, configured origins and the public APP_URL are always allowed
+      if (!origin || env.corsOrigins.includes(origin) || env.corsOrigins.includes('*') || (env.appUrl && origin === env.appUrl)) return cb(null, true);
       return cb(null, false);
     },
     credentials: true,
@@ -48,7 +49,11 @@ app.use(
   rateLimit({ windowMs: 15 * 60 * 1000, max: 600, standardHeaders: true, legacyHeaders: false })
 );
 
-app.get('/api/health', (_req, res) => res.json({ success: true, status: 'ok', time: new Date().toISOString() }));
+app.get('/api/health', async (_req, res) => {
+  let database = 'ok';
+  try { await require('./config/db').ping(); } catch (err) { database = 'error: ' + err.message; }
+  res.json({ success: true, status: 'ok', database, time: new Date().toISOString() });
+});
 app.use('/api/v1', routes);
 app.use('/api', notFound);
 

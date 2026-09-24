@@ -27,6 +27,7 @@ export default function Checkout() {
     setBusy(true);
     try {
       const res = await OrderApi.checkout({ payment_method: method });
+      if (res.gateway_url) { window.location.assign(res.gateway_url); return; }
       setDone(res.order);
       toast.success(res.message);
       refresh();
@@ -90,7 +91,7 @@ export default function Checkout() {
                 ))}
               </div>
               <img src="/images/SSLCommerz.png" alt="SSLCommerz Payment Methods" className="w-full mt-6 mix-blend-multiply dark:mix-blend-normal dark:bg-white dark:rounded-lg dark:p-2" />
-              <p className="text-[11px] text-gray-400 mt-3 flex items-center gap-1"><Lock className="w-3 h-3" /> Demo checkout: the order is marked paid instantly. Connect your SSLCommerz store credentials in the backend to take live payments.</p>
+              <p className="text-[11px] text-gray-400 mt-3 flex items-center gap-1"><Lock className="w-3 h-3" /> Secure payment. You will be redirected to the SSLCommerz payment page to complete your purchase.</p>
             </section>
           </div>
           <aside className="lg:col-span-2">

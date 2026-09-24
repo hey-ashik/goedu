@@ -132,7 +132,10 @@ export default function Footer() {
       <div className="border-t border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">© {new Date().getFullYear()} GoEdu. All rights reserved.</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
+              © {new Date().getFullYear()} GoEdu. All rights reserved. |{' '}
+              <a href="https://wa.me/8801792250709" target="_blank" rel="noopener noreferrer" className="font-semibold text-gray-800 dark:text-gray-200 hover:text-amber-600 transition-colors">developed by Ashikul Islam</a>
+            </p>
             <div className="flex items-center gap-4">
               <p className="text-sm text-gray-600 dark:text-gray-400">Powered by GoEdu</p>
             </div>

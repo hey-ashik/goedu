@@ -69,7 +69,7 @@ const send = asyncHandler(async (req, res) => {
 
   let reply;
   try {
-    reply = await groq.chatCompletion(messages, req.user);
+    reply = await groq.chatCompletion(messages, req.user, require('../utils/publicUrl')(req));
   } catch (err) {
     // do not charge the quota for a failed upstream call
     await query('UPDATE chat_rate_limits SET message_count = GREATEST(message_count - 1, 0), blocked_until = NULL WHERE user_key = ?', [key]);

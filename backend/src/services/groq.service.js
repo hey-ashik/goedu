@@ -23,7 +23,7 @@ async function catalogSnapshot() {
   return catalogCache.text;
 }
 
-async function systemPrompt(user) {
+async function systemPrompt(user, appUrl) {
   const catalog = await catalogSnapshot();
   return `You are "GoEdu AI Mentor", the friendly learning advisor of GoEdu (https://goedu.ac), Bangladesh's GEAC-accredited online course platform with 280+ professional courses, course bundles, the Learner Plus subscription (Monthly ৳699 or Yearly ৳6,990 - includes a growing course library, AI Mentor access, priority support and 20% off other courses) and 1:1 mentorship sessions.
 
@@ -43,7 +43,7 @@ ${catalog}`;
  * Calls Groq's OpenAI-compatible chat completions endpoint.
  * @param {Array<{role:string, content:string}>} messages conversation history (without system)
  */
-async function chatCompletion(messages, user) {
+async function chatCompletion(messages, user, appUrl = env.appUrl || 'https://goedu.ac') {
   if (!env.groq.apiKey) {
     const err = new Error('GROQ_API_KEY is not configured on the server');
     err.status = 503;
@@ -51,7 +51,7 @@ async function chatCompletion(messages, user) {
   }
   const body = {
     model: env.groq.model,
-    messages: [{ role: 'system', content: await systemPrompt(user) }, ...messages],
+    messages: [{ role: 'system', content: await systemPrompt(user, appUrl) }, ...messages],
     temperature: 0.6,
     max_tokens: 700,
     top_p: 1,

@@ -101,6 +101,7 @@ export default function Subscription() {
     setBusy(true);
     try {
       const res = await SubscriptionApi.subscribe(pkg.id);
+      if (res.gateway_url) { window.location.assign(res.gateway_url); return; }
       toast.success(res.message);
       await refresh();
       qc.invalidateQueries({ queryKey: ['packages'] });

@@ -83,11 +83,6 @@ export default function Authentication() {
                 {busy && <Loader2 className="w-4 h-4 animate-spin" />}{mode === 'login' ? 'Log in' : 'Create account'}
               </button>
             </form>
-            {mode === 'login' && (
-              <div className="mt-4 p-3 rounded-xl bg-amber-50 dark:bg-gray-900 border border-amber-100 dark:border-gray-700 text-xs text-gray-600 dark:text-gray-300">
-                Demo account: <button type="button" onClick={() => setForm((f) => ({ ...f, email: 'demo@goedu.ac', password: 'Demo@1234' }))} className="font-bold text-[#b57d05] hover:underline">demo@goedu.ac / Demo@1234</button>
-              </div>
-            )}
             <p className="text-xs text-gray-400 mt-6 text-center">By continuing you agree to our <Link to="/terms-and-conditions" className="underline">Terms</Link> and <Link to="/privacy-policy" className="underline">Privacy Policy</Link>.</p>
           </div>
         </div>

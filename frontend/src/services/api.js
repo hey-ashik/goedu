@@ -122,6 +122,7 @@ export const WishlistApi = {
 export const OrderApi = {
   list: () => api.get('/orders'),
   checkout: (payload) => api.post('/orders/checkout', payload),
+  status: (orderNumber) => api.get('/orders/' + encodeURIComponent(orderNumber)),
   enrollFree: (course_id) => api.post('/orders/enroll-free', { course_id }),
 };
 

@@ -2,6 +2,7 @@ const { query, queryOne, transaction } = require('../config/db');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
 const { safeJson } = require('../utils/format');
+const { newOrderNumber } = require('../services/order.service');
 
 const shape = (p) => ({
   ...p,
@@ -40,26 +41,24 @@ const library = asyncHandler(async (req, res) => {
   res.json({ success: true, results: rows.map(toCard) });
 });
 
-/** POST /subscription/subscribe { package_id } - demo checkout (payment gateway to be connected) */
+/** POST /subscription/subscribe { package_id } - creates the order and starts payment (SSLCommerz or direct) */
 const subscribe = asyncHandler(async (req, res) => {
   const pkg = await queryOne('SELECT * FROM subscription_packages WHERE id = ? AND is_active = 1', [req.body.package_id]);
   if (!pkg) throw ApiError.notFound('Package not found');
   const current = await activeSubscription(req.user.id);
-  const result = await transaction(async (conn) => {
-    const price = pkg.is_discount && Number(pkg.discount_price) > 0 ? Number(pkg.discount_price) : Number(pkg.price);
-    const orderNumber = 'GE-SUB-' + Date.now().toString(36).toUpperCase();
+  if (current && current.package_id === pkg.id) throw ApiError.conflict('This plan is already active on your account');
+  const price = pkg.is_discount && Number(pkg.discount_price) > 0 ? Number(pkg.discount_price) : Number(pkg.price);
+  const order = await transaction(async (conn) => {
+    const orderNumber = newOrderNumber('GE-SUB');
     const [o] = await conn.query(
-      "INSERT INTO orders (order_number, user_id, subtotal, discount, total, payment_method, payment_status, transaction_id, paid_at) VALUES (?, ?, ?, 0, ?, 'sslcommerz', 'paid', ?, NOW())",
-      [orderNumber, req.user.id, price, price, 'DEMO-' + orderNumber]
+      "INSERT INTO orders (order_number, user_id, subtotal, discount, total, payment_method, payment_status) VALUES (?, ?, ?, 0, ?, 'sslcommerz', 'pending')",
+      [orderNumber, req.user.id, price, price]
     );
-    await conn.query("INSERT INTO order_items (order_id, item_type, package_id, title, price) VALUES (?, 'subscription', ?, ?, ?)", [o.insertId, pkg.id, `Learner Plus - ${pkg.title}`, price]);
-    if (current) await conn.query("UPDATE user_subscriptions SET status = 'cancelled' WHERE id = ?", [current.id]);
-    const start = current ? new Date(current.expires_at) : new Date();
-    const expires = new Date(start); expires.setMonth(expires.getMonth() + (pkg.duration || 1));
-    const [s] = await conn.query('INSERT INTO user_subscriptions (user_id, package_id, order_id, starts_at, expires_at) VALUES (?, ?, ?, ?, ?)', [req.user.id, pkg.id, o.insertId, start, expires]);
-    return { subscription_id: s.insertId, order_number: orderNumber, expires_at: expires };
+    await conn.query("INSERT INTO order_items (order_id, item_type, package_id, title, price) VALUES (?, 'subscription', ?, ?, ?)", [o.insertId, pkg.id, 'Learner Plus - ' + pkg.title, price]);
+    return { id: o.insertId, order_number: orderNumber, total: price };
   });
-  res.status(201).json({ success: true, message: `Learner Plus (${pkg.title}) activated!`, ...result });
+  const { startPayment } = require('./order.controller');
+  await startPayment(req, res, order, 'GoEdu Learner Plus (' + pkg.title + ')');
 });
 
 /** POST /subscription/cancel */

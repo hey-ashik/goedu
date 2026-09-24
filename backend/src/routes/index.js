@@ -16,5 +16,6 @@ router.use('/orders', require('./order.routes'));
 router.use('/learning', require('./learning.routes'));
 router.use('/reviews', require('./review.routes'));
 router.use('/chat', require('./chat.routes'));
+router.use('/payments', require('./payment.routes'));
 
 module.exports = router;

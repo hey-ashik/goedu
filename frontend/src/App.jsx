@@ -25,6 +25,7 @@ const BecomeInstructor = lazy(() => import('./pages/BecomeInstructor'));
 const Contact = lazy(() => import('./pages/Contact'));
 const StaticPage = lazy(() => import('./pages/StaticPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const PaymentResult = lazy(() => import('./pages/PaymentResult'));
 
 const DashboardLayout = lazy(() => import('./pages/dashboard/DashboardLayout'));
 const Overview = lazy(() => import('./pages/dashboard/Overview'));
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="ai-mentor" element={<AiMentor />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+            <Route path="payment/:outcome" element={<ProtectedRoute><PaymentResult /></ProtectedRoute>} />
             <Route path="instructor/:slug" element={<InstructorProfile />} />
             <Route path="become-an-instructor" element={<BecomeInstructor />} />
             <Route path="become-a-teacher" element={<BecomeInstructor />} />

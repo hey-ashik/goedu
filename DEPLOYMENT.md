@@ -1,120 +1,167 @@
-# Deploying GoEdu to Hostinger (Node.js + MySQL + GitHub)
+# GoEdu – Easy Deployment Guide (GitHub → Hostinger Node.js + MySQL)
 
-This guide covers Hostinger's **Node.js web hosting** (hPanel → Websites → *Node.js*) as well as a
-**VPS**. The app is a single Node.js process: Express serves the API under `/api` and the built React
-frontend from `frontend/dist`.
+Everything (users, passwords, courses, orders, enrolments, chats) is stored in **MySQL**.
+One Node.js process serves both the API (`/api/...`) and the website. Follow the steps in order.
 
 ---
 
-## 1. Push the project to GitHub
+## Part A – Fix "This site can't provide a secure connection" (ERR_SSL_PROTOCOL_ERROR)
+
+This error is **not** an application bug. It means the browser asked for `https://goedu.ashiik.com`
+but no SSL certificate is active for that (sub)domain yet, or the domain does not point to the app.
+
+1. hPanel → **Websites** → your site → **Security → SSL**.
+2. If `goedu.ashiik.com` is not listed, click **Install SSL** (free Let's Encrypt) and choose the subdomain.
+   A subdomain needs its own certificate – the certificate of `ashiik.com` does not cover it.
+3. Wait 10–30 minutes. Then check **Security → SSL → Force HTTPS** (turn it on).
+4. Meanwhile test with `http://goedu.ashiik.com` (no *s*). If HTTP works, only SSL is missing.
+   If HTTP also fails, go to **Domains → DNS** and make sure `goedu` has an **A record** pointing to
+   your hosting IP (or the CNAME Hostinger created). DNS changes take up to 24 h.
+5. If Hostinger shows *"SSL installation failed"*, remove and re-add the subdomain, then install SSL again.
+
+---
+
+## Part B – Put the code on GitHub
 
 ```bash
-cd goedu
-git init
+cd C:\Users\DIU\Desktop\goedu
 git add .
-git commit -m "GoEdu LMS - initial release"
-git branch -M main
-git remote add origin https://github.com/<your-user>/goedu.git
+git commit -m "Deploy GoEdu"
+git remote add origin https://github.com/<your-username>/goedu.git   # only the first time
 git push -u origin main
 ```
 
-`backend/.env` is git-ignored – secrets are configured on the server (step 3).
+`backend/.env` is ignored by git – your secrets are never uploaded. They are entered in Hostinger (Part D).
 
-## 2. Create the MySQL database (hPanel)
+---
 
-1. hPanel → **Databases → Management** → *Create new database*.
-2. Note the values: database name (e.g. `u123456_goedu`), user, password and host
-   (usually `localhost`, sometimes `sqlXXX.main-hosting.eu`).
-3. (Optional) allow remote access under *Remote MySQL* if you want to seed from your PC.
+## Part C – Create the MySQL database
 
-## 3. Create the Node.js app (Hostinger Node.js hosting)
+1. hPanel → **Databases → Management**.
+2. **Create new database**: e.g. name `goedu`, user `goedu_user`, a strong password → Create.
+3. Write down the 4 values shown: **database name**, **username**, **password**, **host**
+   (usually `localhost`; sometimes something like `sql123.main-hosting.eu`).
 
-1. hPanel → **Websites → Add website → Node.js** (or *Deploy from Git*).
-2. Connect the GitHub repository and choose the `main` branch.
-3. Settings:
-   - **Node version:** 18 or 20
-   - **Build command:** `npm run build`
-   - **Start command / entry file:** `npm start`  (entry: `backend/src/server.js`)
-   - **Root directory:** `/` (repository root)
-4. **Environment variables** (hPanel → Node.js app → Environment):
+   Hostinger prefixes names, so they look like `u123456789_goedu` / `u123456789_goedu_user`.
+
+That is all – **the tables and the 281 courses are created automatically the first time the app starts**
+(`AUTO_MIGRATE=true`). No terminal needed.
+
+---
+
+## Part D – Create the Node.js app and connect GitHub
+
+1. hPanel → **Websites → Add website → Node.js app** (or open your existing app → *Deployments*).
+2. Choose **Deploy from GitHub**, connect your GitHub account, pick the `goedu` repository, branch `main`.
+3. App settings:
+
+   | Setting | Value |
+   | --- | --- |
+   | Node version | 18 or 20 |
+   | Root / project directory | `/` (repository root) |
+   | Install command | `npm install` |
+   | Build command | `npm run build` |
+   | Start command | `npm start` |
+   | Entry file (if asked) | `backend/src/server.js` |
+
+   `npm install` automatically installs the frontend + backend and builds the website
+   (see `postinstall` in `package.json`), so the app also works if the build command is left empty.
+
+4. **Environment variables** (hPanel → Node.js app → *Environment variables* / *.env*):
 
    | Key | Value |
    | --- | --- |
    | `NODE_ENV` | `production` |
-   | `APP_URL` | `https://yourdomain.com` |
-   | `CORS_ORIGINS` | `https://yourdomain.com,https://www.yourdomain.com` |
-   | `DB_HOST` | from step 2 |
+   | `APP_URL` | *(leave empty – detected automatically)* or `https://goedu.ashiik.com` |
+   | `DB_HOST` | host from Part C |
    | `DB_PORT` | `3306` |
-   | `DB_USER` | from step 2 |
-   | `DB_PASSWORD` | from step 2 |
-   | `DB_NAME` | from step 2 |
-   | `JWT_SECRET` | a long random string |
+   | `DB_USER` | username from Part C |
+   | `DB_PASSWORD` | password from Part C |
+   | `DB_NAME` | database name from Part C |
+   | `JWT_SECRET` | any long random text (e.g. 40 characters) |
    | `GROQ_API_KEY` | your key from https://console.groq.com/ |
    | `GROQ_MODEL` | `openai/gpt-oss-120b` |
    | `CHAT_LIMIT` | `10` |
    | `CHAT_WINDOW_MINUTES` | `30` |
+   | `AUTO_MIGRATE` | `true` |
+   | `SEED_DEMO_USER` | `false` |
+   | `SSLCOMMERZ_STORE_ID` | *(see Part F – leave empty at first)* |
+   | `SSLCOMMERZ_STORE_PASSWORD` | *(leave empty at first)* |
+   | `SSLCOMMERZ_SANDBOX` | `true` |
 
-   Hostinger sets `PORT` automatically – the server reads it from `process.env.PORT`.
+   Do **not** set `PORT` – Hostinger provides it.
 
-5. Deploy. Every push to `main` re-deploys automatically when auto-deploy is enabled.
-
-## 4. Create the tables and load the seed data
-
-Run once (from the hPanel terminal / SSH, inside the project folder, after the first deploy):
-
-```bash
-npm run db:setup --prefix backend
-```
-
-This creates all tables (`backend/database/schema.sql`) and inserts the catalogue
-(281 courses, categories, instructors, bundles, blog articles, pages, subscription plans)
-plus the demo learner `demo@goedu.ac / Demo@1234`.
-
-If SSH is not available, run it from your PC against the remote database after enabling
-*Remote MySQL* in hPanel (set `DB_HOST` to the remote host in a local `backend/.env`).
-
-## 5. Point the domain
-
-Attach your domain to the Node.js app in hPanel and enable the free SSL certificate.
-Update `APP_URL` / `CORS_ORIGINS` to the final https URL and redeploy.
+5. Click **Deploy**. Watch the deployment log: you should see
+   `[db] connected to MySQL ...`, `[migrate] database ... is ready`, `[seed] done.` and
+   `[server] GoEdu listening ...`.
+6. Turn on **Auto-deploy**: every `git push` to `main` updates the live site.
 
 ---
 
-## VPS alternative (Ubuntu + PM2 + Nginx)
+## Part E – Check that everything works
 
-```bash
-sudo apt update && sudo apt install -y nodejs npm mysql-server nginx git
-sudo npm i -g pm2
-git clone https://github.com/<your-user>/goedu.git && cd goedu
-cp backend/.env.example backend/.env && nano backend/.env     # fill DB + GROQ values
-npm run build
-npm run db:setup --prefix backend
-pm2 start backend/src/server.js --name goedu && pm2 save && pm2 startup
-```
+| Check | How |
+| --- | --- |
+| API alive | open `https://goedu.ashiik.com/api/health` → `{"success":true,"database":"ok"}` |
+| Courses loaded | home page shows courses and instructors |
+| Accounts in MySQL | Sign up with a new email, log out, log in again |
+| Purchases | add a course to the cart → Checkout → order appears in *Dashboard → Purchases* and the course in *My Learning* |
+| Subscription | Subscription page → Get Yearly Access → dashboard shows *Learner Plus* |
+| AI Mentor | chat bubble bottom-right → ask for a course → answer with links; badge shows "9/10 messages left" |
+| Mentorship | Book a session → appears in *Dashboard → Mentor Sessions* |
 
-Nginx reverse proxy (`/etc/nginx/sites-available/goedu`):
-
-```nginx
-server {
-  server_name yourdomain.com www.yourdomain.com;
-  location / {
-    proxy_pass http://127.0.0.1:5000;
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header X-Forwarded-Proto $scheme;
-  }
-}
-```
-
-Then `sudo ln -s /etc/nginx/sites-available/goedu /etc/nginx/sites-enabled/ && sudo nginx -s reload`
-and `sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com`.
+To look at the data: hPanel → **Databases → phpMyAdmin** → tables `users`, `orders`, `enrollments`, `chat_messages`, ...
 
 ---
 
-## Checklist after deployment
+## Part F – Real online payments (SSLCommerz)
 
-- [ ] `https://yourdomain.com/api/health` returns `{"success":true}`
-- [ ] Home page shows courses (seed loaded)
-- [ ] Login with the demo account works
-- [ ] AI Mentor answers (Groq key valid) and shows "10/10 messages left"
-- [ ] Rotate the Groq API key if it was ever shared in plain text
+Until a merchant account is connected, checkout works in **direct mode**: the order is stored in MySQL
+and the learner is enrolled immediately (good for launching and testing).
+
+To take real card / bKash / Nagad payments:
+
+1. Register at https://sslcommerz.com (they approve Bangladeshi businesses; sandbox is instant at
+   https://developer.sslcommerz.com/registration/).
+2. In Hostinger env vars set `SSLCOMMERZ_STORE_ID`, `SSLCOMMERZ_STORE_PASSWORD` and
+   `SSLCOMMERZ_SANDBOX=true` (test) → redeploy → make a test purchase (test cards are shown on the sandbox page).
+3. When SSLCommerz approves your live store, put the live credentials and set `SSLCOMMERZ_SANDBOX=false`.
+4. In the SSLCommerz merchant panel set the IPN URL to `https://goedu.ashiik.com/api/v1/payments/sslcommerz/ipn`.
+
+Flow: Checkout → order saved as *pending* → customer pays on the SSLCommerz page → SSLCommerz calls the site
+back → the server validates the payment → order becomes *paid* and the courses are unlocked.
+
+---
+
+## Part G – Updating the site later
+
+```bash
+git add .
+git commit -m "describe the change"
+git push
+```
+
+Hostinger redeploys automatically. Database data is never deleted by a redeploy
+(the seed only runs when the `courses` table is empty).
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+| --- | --- |
+| `ERR_SSL_PROTOCOL_ERROR` | Part A – install SSL for the subdomain, wait, force HTTPS |
+| Page shows "GoEdu API is running – build the frontend" | build did not run: set Build command `npm run build` and redeploy |
+| `[db] setup failed: Access denied` | wrong `DB_USER` / `DB_PASSWORD`, or the user is not assigned to the database in hPanel |
+| `Unknown database` | `DB_NAME` typo (remember the `u123456789_` prefix) |
+| Login works but cart/checkout says *Please login* | `NODE_ENV` must be `production` **and** the site must be on HTTPS (auth cookie is secure) |
+| AI Mentor says "busy" | Groq free tier limit (8k tokens/minute) – wait a minute, or upgrade the Groq plan |
+| Images missing | make sure `frontend/public/uploads` was pushed to GitHub (it is part of the repo) |
+
+## Running on your own PC (optional)
+
+```bash
+npm run install:all
+copy backend\.env.example backend\.env      # fill DB_* (local MySQL) and GROQ_API_KEY
+npm run dev                                 # http://localhost:5173
+```

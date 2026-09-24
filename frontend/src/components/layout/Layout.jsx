@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import CartDrawer from './CartDrawer';
 import ChatWidget from '../chat/ChatWidget';
+import BackToTop from './BackToTop';
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -16,6 +17,7 @@ export default function Layout() {
       {!isDashboard && <Footer />}
       <CartDrawer />
       <ChatWidget />
+      <BackToTop />
     </div>
   );
 }

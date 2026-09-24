@@ -13,7 +13,9 @@ const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   isProd: (process.env.NODE_ENV || 'development') === 'production',
   port: toInt(process.env.PORT, 5000),
-  appUrl: process.env.APP_URL || 'http://localhost:5173',
+  // public site url; leave empty in production to auto-detect from the request
+  appUrl: (process.env.APP_URL || '').replace(/\/+$/, ''),
+  autoMigrate: String(process.env.AUTO_MIGRATE || 'true').toLowerCase() !== 'false',
   corsOrigins: (process.env.CORS_ORIGINS || 'http://localhost:5173')
     .split(',')
     .map((s) => s.trim())
@@ -37,6 +39,13 @@ const env = {
     apiKey: process.env.GROQ_API_KEY || '',
     model: process.env.GROQ_MODEL || 'openai/gpt-oss-120b',
     endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+  },
+
+  sslcommerz: {
+    storeId: process.env.SSLCOMMERZ_STORE_ID || '',
+    storePassword: process.env.SSLCOMMERZ_STORE_PASSWORD || '',
+    sandbox: String(process.env.SSLCOMMERZ_SANDBOX || 'true').toLowerCase() !== 'false',
+    get enabled() { return !!(this.storeId && this.storePassword); },
   },
 
   chat: {
