@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import ScrollToTop from './components/layout/ScrollToTop';
+import RouteLoader from './components/layout/RouteLoader';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import PageLoader from './components/common/PageLoader';
 
@@ -49,6 +50,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <RouteLoader />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/en/*" element={<LocaleRedirect />} />

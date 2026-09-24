@@ -154,6 +154,8 @@
 .page-loader { animation: page-loader-in 0.25s ease-out 0.12s both; }
 .page-loader-bar { animation: page-loader-bar 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 .page-loader-logo { animation: page-loader-logo 1.6s ease-in-out infinite; }
+@keyframes page-loader-out { from { opacity: 1; } to { opacity: 0; } }
+.page-loader-leave .page-loader { animation: page-loader-out 0.35s ease-in both; pointer-events: none; }
 @media (prefers-reduced-motion: reduce) {
   .page-loader-logo, .page-loader-bar { animation-duration: 0s; animation-iteration-count: 1; }
 }
