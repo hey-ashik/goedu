@@ -1,0 +1,13 @@
+{
+  "name": "GoEdu - Online Courses in Bangladesh",
+  "short_name": "GoEdu",
+  "description": "GEAC accredited professional online courses with certificates in Bangladesh.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFCF6",
+  "theme_color": "#F3AC08",
+  "icons": [
+    { "src": "/favicon.ico", "sizes": "48x48", "type": "image/x-icon" },
+    { "src": "/images/home/ai-icon.png", "sizes": "198x198", "type": "image/png" }
+  ]
+}

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { BookOpen, ChevronDown, Funnel, Grid3x3, List, Search, X } from 'lucide-react';
+import { BookOpen, ChevronDown, Filter, Grid3x3, List, Search, X } from 'lucide-react';
 import Seo from '../components/common/Seo';
 import CourseCard, { CourseCardSkeleton } from '../components/common/CourseCard';
 import { EmptyState, Pagination } from '../components/common/ui';
@@ -166,7 +166,7 @@ export default function Courses() {
         <div className="flex flex-col xl:flex-row gap-8">
           <div className="xl:hidden">
             <button onClick={() => setShowFilters(true)} className="w-full mb-2 flex items-center justify-center gap-2 px-4 py-3 bg-white dark:bg-gray-800 border border-[#F3AC08]/20 rounded-xl hover:bg-[#F3AC08]/10 transition-all duration-300 text-gray-800 dark:text-gray-100 font-medium">
-              <Funnel className="w-4 h-4" /> Show Filters {activeCount > 0 && <span className="ml-1 text-xs bg-[#F3AC08] text-white rounded-full px-2 py-0.5">{activeCount}</span>}
+              <Filter className="w-4 h-4" /> Show Filters {activeCount > 0 && <span className="ml-1 text-xs bg-[#F3AC08] text-white rounded-full px-2 py-0.5">{activeCount}</span>}
             </button>
           </div>
 
