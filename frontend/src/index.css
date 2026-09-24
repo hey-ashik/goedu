@@ -151,7 +151,8 @@
 @keyframes page-loader-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes page-loader-bar { 0% { left: -35%; } 100% { left: 100%; } }
 @keyframes page-loader-logo { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.75; transform: scale(0.97); } }
-.page-loader { animation: page-loader-in 0.25s ease-out 0.12s both; }
+/* the overlay must be fully opaque on its very first frame so the page never shows through */
+.page-loader { opacity: 1; animation: none; }
 .page-loader-bar { animation: page-loader-bar 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
 .page-loader-logo { animation: page-loader-logo 1.6s ease-in-out infinite; }
 @keyframes page-loader-out { from { opacity: 1; } to { opacity: 0; } }
