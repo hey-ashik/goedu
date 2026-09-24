@@ -91,6 +91,13 @@ That is all – **the tables and the 281 courses are created automatically the f
 
    Do **not** set `PORT` – Hostinger provides it.
 
+   > **Important:** the file `backend/.env` on your PC is **never uploaded** (it is git-ignored),
+   > so values written there do not reach the server. Enter them in the Hostinger panel as above.
+   >
+   > **Option B (if the panel has no environment-variable section):** copy `backend/.env` to
+   > `backend/.env.production`, put the Hostinger database values in it, then `git add` + `git push`.
+   > That file is read automatically on the server. Only do this if the GitHub repository is **private**.
+
 5. Click **Deploy**. Watch the deployment log: you should see
    `[db] connected to MySQL ...`, `[migrate] database ... is ready`, `[seed] done.` and
    `[server] GoEdu listening ...`.
@@ -148,8 +155,20 @@ Hostinger redeploys automatically. Database data is never deleted by a redeploy
 
 ## Troubleshooting
 
+**Site opens but shows no courses / "Something went wrong"** → open `https://yourdomain.com/api/health`.
+If it says `"database": "error: Access denied for user 'root'@..."` the database variables from Part D
+are not applied: the app is using the defaults (`root`, no password). Add `DB_HOST`, `DB_USER`,
+`DB_PASSWORD`, `DB_NAME` in hPanel → Node.js app → *Environment variables* (the `hint` field in the
+health response lists exactly which ones are missing), save, then **Restart / Redeploy** the app.
+As soon as the connection works the app creates the tables and loads all courses by itself.
+
+If the panel has no environment variable section, create a file named `.env` in the repository root
+(same folder as `package.json`) with the same `KEY=value` lines and push it (remember it contains secrets,
+so keep the repository private).
+
 | Problem | Fix |
 | --- | --- |
+| Courses missing / API returns "Something went wrong" | database variables not set – see above |
 | `ERR_SSL_PROTOCOL_ERROR` | Part A – install SSL for the subdomain, wait, force HTTPS |
 | Page shows "GoEdu API is running – build the frontend" | build did not run: set Build command `npm run build` and redeploy |
 | `[db] setup failed: Access denied` | wrong `DB_USER` / `DB_PASSWORD`, or the user is not assigned to the database in hPanel |

@@ -20,6 +20,9 @@ async function prepareDatabase() {
 }
 
 async function start() {
+  if (env.missingDbVars.length) {
+    console.error('[config] MISSING database settings: ' + env.missingDbVars.join(', ') + ' -> using defaults (' + env.db.user + '@' + env.db.host + '/' + env.db.database + '). Set them in the hosting panel environment variables or a .env file.');
+  }
   try {
     if (env.autoMigrate) await prepareDatabase(); // creates the database + tables when missing
     await db.ping();

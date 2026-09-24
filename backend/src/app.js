@@ -52,7 +52,10 @@ app.use(
 app.get('/api/health', async (_req, res) => {
   let database = 'ok';
   try { await require('./config/db').ping(); } catch (err) { database = 'error: ' + err.message; }
-  res.json({ success: true, status: 'ok', database, time: new Date().toISOString() });
+  const hint = env.missingDbVars.length
+    ? 'Database environment variables are not set on the server: ' + env.missingDbVars.join(', ') + '. Add them in the hosting panel (Node.js app -> Environment variables) or in a .env file, then restart/redeploy.'
+    : undefined;
+  res.json({ success: true, status: 'ok', database, db_host: env.db.host, db_user: env.db.user, db_name: env.db.database, hint, time: new Date().toISOString() });
 });
 app.use('/api/v1', routes);
 app.use('/api', notFound);

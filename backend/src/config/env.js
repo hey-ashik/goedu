@@ -1,8 +1,12 @@
 const path = require('path');
 const dotenv = require('dotenv');
 
-// Load backend/.env (works no matter where the process is started from)
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+// Load backend/.env first, then a repository-root .env as fallback (hosting panels sometimes only allow a root .env)
+// Order: backend/.env, backend/.env.production, <repo>/.env, <repo>/.env.production (first value wins; real
+// environment variables set by the hosting panel always take precedence).
+for (const f of ['../../.env', '../../.env.production', '../../../.env', '../../../.env.production']) {
+  dotenv.config({ path: path.resolve(__dirname, f) });
+}
 
 const toInt = (v, fallback) => {
   const n = parseInt(v, 10);
@@ -22,7 +26,8 @@ const env = {
     .filter(Boolean),
 
   db: {
-    host: process.env.DB_HOST || 'localhost',
+    // 127.0.0.1 instead of localhost avoids IPv6 (::1) sockets that shared hosts often reject
+    host: process.env.DB_HOST || '127.0.0.1',
     port: toInt(process.env.DB_PORT, 3306),
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
@@ -53,5 +58,8 @@ const env = {
     windowMinutes: toInt(process.env.CHAT_WINDOW_MINUTES, 30),
   },
 };
+
+/** Names of required database settings that are still unset (used for startup + /api/health hints). */
+env.missingDbVars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'].filter((k) => !process.env[k]);
 
 module.exports = env;

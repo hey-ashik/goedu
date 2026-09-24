@@ -9,9 +9,10 @@ backend/dist/
 # environment
 .env
 .env.local
-.env.production
 backend/.env
 frontend/.env
+# .env.production files are deliberately NOT ignored: on hosts without an environment-variable panel
+# you can commit backend/.env.production (keep the repository private!)
 
 # logs
 logs/
