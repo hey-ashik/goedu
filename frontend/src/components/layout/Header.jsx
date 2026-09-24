@@ -159,7 +159,7 @@ export default function Header() {
               <div className="px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                   <div className="flex items-center gap-8">
-                    <Link to="/" className="flex items-center cursor-pointer" aria-label="GoEdu home">
+                    <Link to="/" onClick={() => window.dispatchEvent(new Event('goedu:loader'))} className="flex items-center cursor-pointer" aria-label="GoEdu home">
                       <img src="/logo.svg" alt="GoEdu Logo" width="140" height="45" className="h-10 w-auto" />
                     </Link>
                     <nav className="hidden lg:flex items-center bg-[#E7E7E7] dark:bg-gray-800 rounded-full px-2 py-1.5">

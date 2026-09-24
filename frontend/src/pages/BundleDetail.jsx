@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { BookOpen, CircleCheck, Clock, Layers, Loader2, Target, Users } from 'lucide-react';
 import Seo from '../components/common/Seo';
-import PageLoader from '../components/common/PageLoader';
+import ContentLoader from '../components/common/ContentLoader';
 import CourseCard, { Taka } from '../components/common/CourseCard';
 import { BundleCard } from './Bundles';
 import { BundleApi } from '../services/api';
@@ -19,7 +19,7 @@ export default function BundleDetail() {
   const q = useQuery({ queryKey: ['bundle', slug], queryFn: () => BundleApi.detail(slug) });
   const b = q.data?.bundle;
 
-  if (q.isLoading) return <PageLoader />;
+  if (q.isLoading) return <ContentLoader />;
   if (!b) return <div className="pt-40 pb-20 text-center"><h1 className="text-2xl font-bold">Bundle not found</h1><Link to="/bundles" className="text-[#F3AC08] font-semibold">All bundles</Link></div>;
 
   const buy = async () => {

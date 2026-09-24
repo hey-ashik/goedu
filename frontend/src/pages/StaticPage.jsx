@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Seo from '../components/common/Seo';
-import PageLoader from '../components/common/PageLoader';
+import ContentLoader from '../components/common/ContentLoader';
 import { PageHero } from '../components/common/ui';
 import { SiteApi } from '../services/api';
 
@@ -9,7 +9,7 @@ export default function StaticPage({ slug: fixedSlug }) {
   const params = useParams();
   const slug = fixedSlug || params.slug;
   const q = useQuery({ queryKey: ['page', slug], queryFn: () => SiteApi.page(slug) });
-  if (q.isLoading) return <PageLoader />;
+  if (q.isLoading) return <ContentLoader />;
   if (!q.data?.page) return <div className="pt-40 pb-20 text-center"><h1 className="text-2xl font-bold">Page not found</h1><Link to="/" className="text-[#F3AC08] font-semibold">Go home</Link></div>;
   const page = q.data.page;
   return (

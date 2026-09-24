@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Calendar, Clock, Copy, Eye, Facebook, Loader2, MessageCircle, Twitter } from 'lucide-react';
 import Seo from '../components/common/Seo';
-import PageLoader from '../components/common/PageLoader';
+import ContentLoader from '../components/common/ContentLoader';
 import { ArticleApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { formatDate, img } from '../utils/format';
@@ -19,7 +19,7 @@ export default function BlogDetail() {
   const q = useQuery({ queryKey: ['article', slug], queryFn: () => ArticleApi.detail(slug) });
   const a = q.data?.article;
 
-  if (q.isLoading) return <PageLoader />;
+  if (q.isLoading) return <ContentLoader />;
   if (!a) return <div className="pt-40 pb-20 text-center"><h1 className="text-2xl font-bold">Article not found</h1><Link to="/blog" className="text-[#F3AC08] font-semibold">Back to blog</Link></div>;
 
   const url = typeof window !== 'undefined' ? window.location.href : '';

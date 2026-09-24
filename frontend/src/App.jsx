@@ -4,7 +4,7 @@ import Layout from './components/layout/Layout';
 import ScrollToTop from './components/layout/ScrollToTop';
 import RouteLoader from './components/layout/RouteLoader';
 import ProtectedRoute from './components/common/ProtectedRoute';
-import PageLoader from './components/common/PageLoader';
+import ContentLoader from './components/common/ContentLoader';
 
 const Home = lazy(() => import('./pages/Home'));
 const Courses = lazy(() => import('./pages/Courses'));
@@ -51,7 +51,7 @@ export default function App() {
     <>
       <ScrollToTop />
       <RouteLoader />
-      <Suspense fallback={<PageLoader />}>
+      <Suspense fallback={<ContentLoader />}>
         <Routes>
           <Route path="/en/*" element={<LocaleRedirect />} />
           <Route path="/bn/*" element={<LocaleRedirect />} />

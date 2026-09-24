@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Award, ChevronDown, ChevronLeft, ChevronRight, CircleCheck, Circle, FileText, Play } from 'lucide-react';
-import PageLoader from '../../components/common/PageLoader';
+import ContentLoader from '../../components/common/ContentLoader';
 import { LearningApi } from '../../services/api';
 import { cn, img, lessonTime } from '../../utils/format';
 
@@ -22,7 +22,7 @@ export default function CoursePlayer() {
     if (first) { setCurrent(first); setOpen(new Set([first.section_id])); }
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (q.isLoading) return <PageLoader />;
+  if (q.isLoading) return <ContentLoader />;
   if (q.error || !data) return <div className="text-center py-20"><h1 className="text-xl font-bold mb-2">{q.error?.message || 'Course not available'}</h1><Link to="/dashboard/my-learning" className="text-[#F3AC08] font-semibold">Back to My Learning</Link></div>;
 
   const idx = lessons.findIndex((l) => l.id === current?.id);

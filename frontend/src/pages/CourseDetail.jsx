@@ -6,7 +6,7 @@ import {
   Award, BookOpen, ChartNoAxesColumnIncreasing, ChevronDown, CircleCheckBig, Clock, Download, FileText, Globe, Heart, Info, Lock, LockOpen, MonitorPlay, Play, Star, Loader2,
 } from 'lucide-react';
 import Seo from '../components/common/Seo';
-import PageLoader from '../components/common/PageLoader';
+import ContentLoader from '../components/common/ContentLoader';
 import TopPicksSection from '../components/home/TopPicksSection';
 import { Stars } from '../components/common/ui';
 import { Taka } from '../components/common/CourseCard';
@@ -156,7 +156,7 @@ export default function CourseDetail() {
     return { main: course.price };
   }, [course, user]);
 
-  if (q.isLoading) return <PageLoader />;
+  if (q.isLoading) return <ContentLoader />;
   if (q.error || !course) {
     return (
       <div className="pt-40 pb-20 text-center">

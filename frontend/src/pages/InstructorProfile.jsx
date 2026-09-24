@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Award, BookOpen, Building2, ShieldCheck } from 'lucide-react';
 import Seo from '../components/common/Seo';
-import PageLoader from '../components/common/PageLoader';
+import ContentLoader from '../components/common/ContentLoader';
 import CourseCard from '../components/common/CourseCard';
 import { EmptyState } from '../components/common/ui';
 import { InstructorApi } from '../services/api';
@@ -12,7 +12,7 @@ export default function InstructorProfile() {
   const { slug } = useParams();
   const q = useQuery({ queryKey: ['instructor', slug], queryFn: () => InstructorApi.detail(slug) });
   const i = q.data?.instructor;
-  if (q.isLoading) return <PageLoader />;
+  if (q.isLoading) return <ContentLoader />;
   if (!i) return <div className="pt-40 pb-20 text-center"><h1 className="text-2xl font-bold">Instructor not found</h1><Link to="/courses" className="text-[#F3AC08] font-semibold">Browse courses</Link></div>;
   return (
     <div className="min-h-screen bg-[#FFFCF6] dark:bg-gray-900 pt-20 md:pt-24 pb-16">

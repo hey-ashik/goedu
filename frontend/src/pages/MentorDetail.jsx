@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Calendar, CircleCheck, Clock, Loader2, ShieldCheck, Star, Video } from 'lucide-react';
 import Seo from '../components/common/Seo';
-import PageLoader from '../components/common/PageLoader';
+import ContentLoader from '../components/common/ContentLoader';
 import CourseCard, { Taka } from '../components/common/CourseCard';
 import { MentorshipApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -21,7 +21,7 @@ export default function MentorDetail() {
   const [booked, setBooked] = useState(null);
   const m = q.data?.mentor;
 
-  if (q.isLoading) return <PageLoader />;
+  if (q.isLoading) return <ContentLoader />;
   if (!m) return <div className="pt-40 pb-20 text-center"><h1 className="text-2xl font-bold">Mentor not found</h1><Link to="/mentorship" className="text-[#F3AC08] font-semibold">Browse mentors</Link></div>;
 
   const book = async () => {
