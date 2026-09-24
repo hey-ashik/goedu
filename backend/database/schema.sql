@@ -397,14 +397,37 @@ CREATE TABLE IF NOT EXISTS mentor_bookings (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------- AI Mentor chatbot ----------
+-- Visitors who introduced themselves in the chat pre-chat form (name / email / phone).
+-- Logged in users are linked through user_id; guests through their cookie key.
+CREATE TABLE IF NOT EXISTS chat_visitors (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(150) DEFAULT NULL,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  phone VARCHAR(40) DEFAULT NULL,
+  user_id INT UNSIGNED DEFAULT NULL,
+  last_user_key VARCHAR(80) DEFAULT NULL,
+  source VARCHAR(40) NOT NULL DEFAULT 'pre_chat_form',
+  page_url VARCHAR(500) DEFAULT NULL,
+  session_count INT UNSIGNED NOT NULL DEFAULT 0,
+  message_count INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_seen_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_cv_user (user_id),
+  INDEX idx_cv_key (last_user_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS chat_conversations (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   user_key VARCHAR(80) NOT NULL,
   user_id INT UNSIGNED DEFAULT NULL,
+  visitor_id INT UNSIGNED DEFAULT NULL,
   title VARCHAR(190) DEFAULT NULL,
+  message_count INT UNSIGNED NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  INDEX idx_cc_key (user_key)
+  INDEX idx_cc_key (user_key, updated_at),
+  INDEX idx_cc_visitor (visitor_id, updated_at),
+  INDEX idx_cc_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS chat_messages (
@@ -414,7 +437,7 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   content MEDIUMTEXT NOT NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_cm_conv FOREIGN KEY (conversation_id) REFERENCES chat_conversations(id) ON DELETE CASCADE,
-  INDEX idx_cm_conv (conversation_id)
+  INDEX idx_cm_conv (conversation_id, id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Per-user rate limiting: CHAT_LIMIT messages, then blocked for CHAT_WINDOW_MINUTES

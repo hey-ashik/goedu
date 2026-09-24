@@ -145,11 +145,28 @@
   @apply absolute left-0 text-[#F3AC08] font-bold;
 }
 
+/* ---------- Chat widget (GoEdu AI Assistant) ---------- */
+@keyframes cai-bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+@keyframes cai-pop-in { from { opacity: 0; transform: scale(0.95) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes cai-slide-in { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes cai-msg-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.cai-dot { width: 6px; height: 6px; border-radius: 9999px; background: #9ca3af; animation: cai-bounce 1.4s infinite ease-in-out both; }
+.cai-dot:nth-child(1) { animation-delay: -0.32s; }
+.cai-dot:nth-child(2) { animation-delay: -0.16s; }
+.cai-pop-in { animation: cai-pop-in 0.2s ease-out; }
+.cai-slide-in { animation: cai-slide-in 0.3s ease; }
+.cai-msg { animation: cai-msg-in 0.25s ease-out both; }
+/* phones: the panel is full screen, keep the page underneath from scrolling */
+html.cai-chat-active { overflow: hidden; overscroll-behavior: none; }
+#cai-widget i { line-height: 1; }
+
 /* ---------- Chat widget markdown ---------- */
 .chat-md p { @apply my-1.5; }
 .chat-md ul { @apply list-disc pl-5 my-1.5 space-y-1; }
 .chat-md ol { @apply list-decimal pl-5 my-1.5 space-y-1; }
-.chat-md a { @apply text-amber-700 dark:text-amber-400 underline break-words; }
+.chat-md a { @apply underline break-words; color: inherit; }
+.chat-md p:first-child { @apply mt-0; }
+.chat-md p:last-child { @apply mb-0; }
 .chat-md strong { @apply font-semibold; }
 .chat-md code { @apply bg-black/10 dark:bg-white/10 rounded px-1 text-[12px]; }
 

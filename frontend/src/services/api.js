@@ -138,6 +138,9 @@ export const ReviewApi = {
 
 export const ChatApi = {
   status: () => api.get('/chat/status'),
+  /** pre-chat form: { name, email, phone? } -> stored in MySQL (chat_visitors) */
+  identify: (payload) => api.post('/chat/identify', { ...payload, page_url: typeof window !== 'undefined' ? window.location.href : undefined }),
+  sessions: () => api.get('/chat/sessions'),
   history: (conversation_id) => api.get('/chat/history', { params: conversation_id ? { conversation_id } : {} }),
   newConversation: () => api.post('/chat/new'),
   send: (message, conversation_id) => api.post('/chat', { message, conversation_id }),
