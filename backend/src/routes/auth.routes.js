@@ -4,7 +4,15 @@ const c = require('../controllers/auth.controller');
 const { requireAuth } = require('../middleware/auth');
 const { validate } = require('../middleware/validate');
 
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 40, standardHeaders: true, legacyHeaders: false });
+// Only failed attempts count, so many learners behind one campus/office IP are not locked out together.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many login attempts. Please wait 15 minutes and try again.' },
+});
 
 router.post(
   '/register',
