@@ -57,7 +57,7 @@ export default function Hero() {
   const showResults = focused && (loading || results.length > 0 || searched);
 
   return (
-    <section aria-labelledby="hero-new-heading" className="hero-section relative z-30 w-full bg-[#FFF6DD] dark:bg-gray-900 flex flex-col mt-[4.5rem] lg:mt-0 lg:pt-20 overflow-hidden">
+    <section aria-labelledby="hero-new-heading" className="hero-section relative z-30 w-full bg-[#FFF6DD] dark:bg-gray-900 flex flex-col mt-[84px] md:mt-[116px] lg:mt-24 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <div
           className="absolute bottom-0 left-0 w-full pointer-events-none select-none z-0"

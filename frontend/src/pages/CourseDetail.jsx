@@ -171,7 +171,7 @@ export default function CourseDetail() {
   const cta = enrolled ? 'Go to Course' : course.price === 0 ? 'Enroll for Free' : subFree ? 'Start Learning (Learner Plus)' : 'Buy Now';
 
   return (
-    <div className="min-h-screen bg-[#fffcf6] dark:bg-gray-900 pt-[4.2rem] lg:pt-24">
+    <div className="min-h-screen bg-[#fffcf6] dark:bg-gray-900 pt-[6.2rem]">
       <Seo title={course.title} description={course.meta_description || `${course.title} - online course on GoEdu`} image={course.thumbnail} />
       {/* yellow hero */}
       <div className="container md:mx-auto bg-gradient-to-b from-[#FFF4D3] to-[#FCD53F] dark:from-gray-800 dark:to-gray-900 rounded-3xl px-4 lg:px-8 pt-10">

@@ -8,6 +8,8 @@ import BackToTop from './BackToTop';
 export default function Layout() {
   const { pathname } = useLocation();
   const isDashboard = pathname.startsWith('/dashboard');
+  // the full-page assistant already is the chat: no floating bubble there (any screen size)
+  const isAiMentor = pathname.startsWith('/ai-mentor');
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFCF6] dark:bg-gray-900 transition-colors duration-300">
       <Header />
@@ -16,7 +18,7 @@ export default function Layout() {
       </main>
       {!isDashboard && <Footer />}
       <CartDrawer />
-      <ChatWidget />
+      {!isAiMentor && <ChatWidget />}
       <BackToTop />
     </div>
   );

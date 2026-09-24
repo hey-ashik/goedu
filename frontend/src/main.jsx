@@ -11,6 +11,17 @@ import { ThemeProvider } from './context/ThemeContext';
 import { ChatProvider } from './context/ChatContext';
 import './index.css';
 
+// After a redeploy the old hashed chunks no longer exist; reload once so the
+// browser picks up the new index.html instead of showing an empty page.
+window.addEventListener('vite:preloadError', (event) => {
+  event.preventDefault();
+  try {
+    if (sessionStorage.getItem('goedu-chunk-reload') === '1') return;
+    sessionStorage.setItem('goedu-chunk-reload', '1');
+  } catch { /* ignore */ }
+  window.location.reload();
+});
+
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 60 * 1000, retry: 1, refetchOnWindowFocus: false } },
 });

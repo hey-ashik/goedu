@@ -46,7 +46,7 @@ app.use(optionalAuth);
 // generic API abuse protection (the chatbot has its own per-user quota)
 app.use(
   '/api',
-  rateLimit({ windowMs: 15 * 60 * 1000, max: 600, standardHeaders: true, legacyHeaders: false })
+  rateLimit({ windowMs: 15 * 60 * 1000, max: 3000, standardHeaders: true, legacyHeaders: false, message: { success: false, message: 'Too many requests, please slow down and try again in a few minutes.' } })
 );
 
 app.get('/api/health', async (_req, res) => {
@@ -65,6 +65,10 @@ const distDir = path.resolve(__dirname, '../../frontend/dist');
 app.use(express.static(distDir, { maxAge: env.isProd ? '7d' : 0, index: false }));
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
+  // a hashed asset that no longer exists (old build) must be a real 404, never index.html
+  if (req.path.startsWith('/assets/')) return res.status(404).type('text').send('Not found');
+  // index.html is always revalidated so a redeploy never leaves browsers on stale asset hashes
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(distDir, 'index.html'), (err) => {
     if (err) res.status(200).send('<h1>GoEdu API is running</h1><p>Build the frontend with <code>npm run build</code>.</p>');
   });

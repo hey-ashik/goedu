@@ -33,6 +33,15 @@
   </head>
   <body class="bg-[#FFFCF6] dark:bg-gray-900">
     <div id="root"></div>
+    <script>
+      // If the main bundle fails to load (stale index.html after a redeploy), fetch a fresh copy once.
+      window.addEventListener('error', function (e) {
+        var t = e.target;
+        if (!t || t.tagName !== 'SCRIPT' || !/\/assets\//.test(t.src || '')) return;
+        try { if (sessionStorage.getItem('goedu-chunk-reload') === '1') return; sessionStorage.setItem('goedu-chunk-reload', '1'); } catch (err) {}
+        location.reload();
+      }, true);
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

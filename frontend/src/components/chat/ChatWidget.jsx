@@ -225,7 +225,7 @@ export function PreChatForm({ onSubmit, compact }) {
   };
   const input = 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-[15px] outline-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:border-[#F5B622] transition-colors';
   return (
-    <form onSubmit={submit} className={cn('flex-1 flex flex-col justify-center px-6', compact ? 'py-6' : 'py-8')}>
+    <form onSubmit={submit} className={cn('flex-1 flex flex-col justify-center overflow-y-auto px-5 sm:px-6', compact ? 'py-6' : 'py-8')}>
       <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">👋 Welcome!</h3>
       <p className="text-gray-500 dark:text-gray-400 mb-8">Please enter your details to start.</p>
       <div className="mb-5">

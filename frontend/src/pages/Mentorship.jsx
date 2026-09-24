@@ -158,9 +158,10 @@ export default function Mentorship() {
   const applied = [category].filter(Boolean).length;
 
   return (
-    <div className="min-h-screen bg-[#FFFCF6] dark:bg-gray-900 transition-colors duration-300 pt-16">
+    <div className="min-h-screen bg-[#FFFCF6] dark:bg-gray-900 transition-colors duration-300">
       <Seo title="Find Top Industry Mentors & Book 1:1 Sessions | GoEdu Mentorship" description="Book personalized 1-on-1 sessions with verified industry experts across software engineering, AI, business, study abroad and career growth." />
-      <div className="relative overflow-hidden bg-[#FFF6DD] dark:bg-gray-900">
+      {/* hero starts at the very top so its colour runs under the transparent header, exactly like the home page */}
+      <div className="relative overflow-hidden bg-[#FFF6DD] dark:bg-gray-900 pt-[90px]">
         <div className="absolute bottom-0 left-0 w-full pointer-events-none select-none" style={{ height: '60%', background: 'radial-gradient(ellipse 70% 80% at 50% 100%, rgba(255, 178, 0, 0.35) 0%, rgba(243, 172, 8, 0.15) 45%, rgba(253, 215, 70, 0) 100%)' }} aria-hidden="true" />
         <div className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-14 sm:pt-16 sm:pb-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
