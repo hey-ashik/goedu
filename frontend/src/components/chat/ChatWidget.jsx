@@ -101,7 +101,8 @@ export function useChatSession() {
     setMessages((m) => [...m, { role: 'user', content: message, created_at: new Date().toISOString() }]);
     setSending(true);
     try {
-      const res = await ChatApi.send(message, conversationId);
+      // keep the typing dots on screen for a beat so the reply feels typed, not instant
+      const [res] = await Promise.all([ChatApi.send(message, conversationId), new Promise((r) => setTimeout(r, 900))]);
       setConversationId(res.conversation_id);
       setMessages((m) => [...m, { role: 'assistant', content: res.reply, created_at: new Date().toISOString() }]);
       setQuota((q) => ({ ...(q || {}), ...res.quota, blocked: res.quota.limit_reached, retry_after_seconds: res.quota.limit_reached ? res.quota.window_minutes * 60 : 0 }));
@@ -345,7 +346,7 @@ export default function ChatWidget() {
         id="cai-bubble"
         onClick={toggle}
         aria-label={isOpen ? 'Close chat' : 'Open chat'}
-        className={cn(GRADIENT, 'relative w-[60px] h-[60px] rounded-full text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center', !isOpen && 'animate-pulse-glow', isOpen && 'max-[480px]:hidden')}
+        className={cn('relative w-[60px] h-[60px] rounded-full bg-[#F5B622] hover:bg-[#E0A51C] text-white transition-colors duration-300 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5B622] focus-visible:ring-offset-2', isOpen && 'max-[480px]:hidden')}
       >
         <span className={cn('absolute inset-0 flex items-center justify-center transition-all duration-300', isOpen ? 'opacity-0 scale-50 rotate-90' : 'opacity-100 scale-100 rotate-0')}><Fa icon="fa-brands fa-openai" className="text-[28px]" /></span>
         <span className={cn('absolute inset-0 flex items-center justify-center transition-all duration-300', isOpen ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-50 -rotate-90')}><Fa icon="fa-solid fa-xmark" className="text-[26px]" /></span>

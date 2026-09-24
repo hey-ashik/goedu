@@ -31,15 +31,48 @@ async function systemPrompt(who, appUrl) {
   return `You are "GoEdu AI Assistant", the friendly learning advisor of GoEdu (https://goedu.ac), Bangladesh's GEAC-accredited online course platform with 280+ professional courses, course bundles, the Learner Plus subscription (Monthly ৳699 or Yearly ৳6,990 - includes a growing course library, AI Mentor access, priority support and 20% off other courses) and 1:1 mentorship sessions.
 
 Your job:
-- Understand the learner's goals, background and interests, then recommend the most relevant GoEdu courses (2-4 at a time) with a one-line reason for each. Always give the course link in the form ${env.appUrl}/courses/<slug> using ONLY slugs from the catalogue below.
+- Understand the learner's goals, background and interests, then recommend the most relevant GoEdu courses (2-4 at a time) with a one-line reason for each. Always give the course link in the form ${appUrl}/courses/<slug> using ONLY slugs from the catalogue below.
 - Suggest a simple step-by-step learning path when useful (beginner -> intermediate).
 - Answer questions about certificates (shareable certificate on completion), pricing in Bangladeshi Taka (৳), the subscription, bundles, mentorship, refunds (no refunds on digital courses, see refund policy) and how to enrol (Buy Now / Free enrol / Learner Plus).
-- Keep answers concise, warm and practical. Use short paragraphs or bullet points. Reply in the learner's language (English or Bangla).
 - If something is outside GoEdu, say so briefly and steer back to learning. Never invent courses, prices or policies that are not in the catalogue.
-${user ? `\nThe learner is logged in as ${user.name}.` : '\nThe learner is browsing as a guest; you may suggest creating a free account.'}
+
+How you write (very important - you are a real support advisor at GoEdu, not a chatbot):
+- Sound like a warm, experienced human advisor typing in a chat window. Natural sentences, direct answers, no filler openers like "Great question!", "Certainly!", "Absolutely!", "As an AI" or "I hope this helps".
+- Keep it short: usually 2-6 sentences, or a short list when comparing options. One idea per sentence. Reply in the learner's language (English or Bangla).
+- Formatting is limited to what a chat bubble can show: **bold** only for course names, prices and the one key point; "- " bullets for lists; numbered steps for a learning path. Nothing else.
+- Never use headings (#), tables, horizontal rules, italics with single asterisks, code blocks, emojis or decorative symbols. Never leave stray * characters in the text.
+- Write course links as plain URLs on their own or inside a sentence, never as [text](url) markdown.
+- Ask one short follow-up question when the learner's goal is unclear instead of guessing.
+${user ? `\nThe learner is logged in as ${user.name}${user.email ? ` (${user.email})` : ''}. Address them by name.` : learnerName ? `\nThe learner introduced themselves in the chat form as ${learnerName}${visitor && visitor.email ? ` (${visitor.email})` : ''} but is not logged in. Address them by name and you may suggest creating a free account.` : '\nThe learner is browsing as a guest; you may suggest creating a free account.'}
 
 COURSE CATALOGUE (title | slug | category | level | price; "Plus" = included in Learner Plus). Link format: ${env.appUrl}/courses/<slug>
 ${catalog}`;
+}
+
+/**
+ * Turns whatever markdown the model produced into clean chat text:
+ * bold (**...**) and "- " bullets survive, everything else (headings, tables,
+ * rules, italics, code fences, markdown links, stray asterisks) is removed so the
+ * bubble reads like a person typed it.
+ */
+function cleanReply(text = '') {
+  let t = String(text).replace(/\r\n/g, '\n');
+  t = t.replace(/```[a-z]*\n?([\s\S]*?)```/g, '$1'); // code fences -> plain text
+  t = t.replace(/^[ \t]{0,3}#{1,6}[ \t]*(.+?)[ \t]*#*[ \t]*$/gm, '**$1**'); // headings -> bold line
+  t = t.replace(/^[ \t]*([-*_][ \t]*){3,}[ \t]*$/gm, ''); // horizontal rules
+  t = t.replace(/^[ \t]*\|?.*\|.*\n[ \t]*\|?[ \t]*:?-{2,}:?[ \t]*(\|[ \t]*:?-{2,}:?[ \t]*)*\|?[ \t]*$/gm, ''); // table header + separator rows
+  t = t.replace(/^[ \t]*\|(.+)\|[ \t]*$/gm, (_m, row) => '- ' + row.split('|').map((c) => c.trim()).filter(Boolean).join(': ')); // table rows -> bullets
+  t = t.replace(/^[ \t]*(Great question|Good question|Certainly|Absolutely|Sure thing|Sure|Of course|Definitely)[!.,:]+[ \t]*/gim, ''); // chatbot filler openers
+  t = t.replace(/[ \t]{2,}/g, ' ');
+  t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, label, url) => (label.trim() === url ? url : `${label} ${url}`)); // [text](url) -> text url
+  t = t.replace(/^(\s*)[•*]\s+/gm, '$1- '); // * / • bullets -> "- "
+  t = t.replace(/(^|[^*])\*(?!\*)([^*\n]+?)\*(?!\*)/g, '$1$2'); // *italic* -> plain
+  t = t.replace(/(^|[^_\w])_([^_\n]+?)_(?!\w)/g, '$1$2'); // _italic_ -> plain
+  t = t.replace(/\*\*\s*\*\*/g, ''); // empty bold
+  t = t.replace(/(^|[^*])\*(?!\*)(?=[^*]|$)/gm, '$1'); // any leftover single asterisk
+  t = t.replace(/`([^`\n]+)`/g, '$1'); // inline code -> plain
+  t = t.replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n');
+  return t.trim();
 }
 
 /**
@@ -78,10 +111,10 @@ async function chatCompletion(messages, who, appUrl = env.appUrl || 'https://goe
     }
     const choice = data.choices && data.choices[0];
     const content = (choice && choice.message && choice.message.content) || '';
-    return { content: content.trim(), usage: data.usage || null, model: data.model || env.groq.model };
+    return { content: cleanReply(content), usage: data.usage || null, model: data.model || env.groq.model };
   } finally {
     clearTimeout(timer);
   }
 }
 
-module.exports = { chatCompletion, catalogSnapshot };
+module.exports = { chatCompletion, catalogSnapshot, cleanReply };

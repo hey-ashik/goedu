@@ -67,6 +67,8 @@ export const miniMarkdown = (text = '') => {
     s
       .replace(/`([^`]+)`/g, '<code>$1</code>')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|[^*\w])\*(?!\*)([^*\n]+?)\*(?!\*)/g, '$1$2') // *italic* -> plain text (chat bubbles stay clean)
+      .replace(/(^|[^*])\*(?!\*)/g, '$1') // stray single asterisks
       .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|\/[^\s)]*)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
       .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
   for (const raw of lines) {

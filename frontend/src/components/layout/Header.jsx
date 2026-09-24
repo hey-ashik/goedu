@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
-  BookOpen, BookPlus, ChevronDown, CircleHelp, CreditCard, House, LayoutDashboard, LogIn, LogOut, Menu, MessageCircle,
-  Moon, Newspaper, Package, CirclePlay, ShoppingBag, Sun, User, UsersRound, X, Heart, GraduationCap, ReceiptText,
+  BookOpen, BookPlus, CircleHelp, CreditCard, House, LayoutDashboard, LogIn, LogOut, Menu, MessageCircle,
+  Moon, Newspaper, Package, CirclePlay, ShoppingCart, Sun, User, UsersRound, X, Heart, GraduationCap, ReceiptText,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
@@ -28,7 +29,7 @@ function ThemeToggle({ className }) {
       tabIndex={0}
       onClick={toggle}
       onKeyDown={(e) => e.key === 'Enter' && toggle()}
-      className={cn('p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer text-gray-700 dark:text-gray-200', className)}
+      className={cn('p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer text-gray-700 dark:text-gray-300 transition-colors', className)}
       aria-label="Toggle theme"
     >
       {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -55,19 +56,21 @@ function UserMenu() {
   ];
   return (
     <div className="relative" ref={ref}>
-      <button
+      {/* goedu.ac style trigger: amber initials avatar + full name */}
+      <motion.button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-full pl-1 pr-3 py-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        aria-label="Account menu"
+        whileHover={{ scale: 1.05, transition: { type: 'spring' } }}
+        whileTap={{ scale: 0.95 }}
+        className="flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-300 relative overflow-hidden group"
+        aria-label="Open user menu"
       >
         {user.photo ? (
-          <img src={user.photo} alt={user.name} className="h-8 w-8 rounded-full object-cover" />
+          <img src={user.photo} alt={user.name} className="rounded-full object-cover h-9 w-9 border-2 border-transparent group-hover:border-amber-400 transition-all duration-300" />
         ) : (
-          <span className="h-8 w-8 rounded-full bg-amber-400 flex items-center justify-center font-bold text-sm text-white">{initials(user.name)}</span>
+          <span className="h-9 w-9 rounded-full bg-amber-400 flex items-center justify-center font-bold text-lg text-white shadow-lg group-hover:shadow-xl transition-all duration-300">{initials(user.name)}</span>
         )}
-        <span className="font-workSans text-sm text-gray-700 dark:text-gray-200 max-w-[110px] truncate">{user.name.split(' ')[0]}</span>
-        <ChevronDown className={cn('h-4 w-4 text-gray-500 transition-transform', open && 'rotate-180')} />
-      </button>
+        <span className="hidden md:block font-semibold text-sm text-gray-700 dark:text-gray-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-300 max-w-[160px] truncate">{user.name}</span>
+      </motion.button>
       {open && (
         <div className="absolute right-0 mt-2 w-60 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-2 z-50 animate-fadeIn">
           <div className="px-3 py-2 border-b border-gray-100 dark:border-gray-800 mb-1">
@@ -128,77 +131,102 @@ export default function Header() {
 
   return (
     <>
-      <div className="fixed top-0 inset-x-0 z-[90] px-3 sm:px-4 lg:px-6 pt-3 pointer-events-none">
-        <header
-          className={cn(
-            'w-full rounded-full transition-all duration-300 pointer-events-auto max-w-[1600px] mx-auto',
-            scrolled
-              ? 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border border-gray-100 dark:border-gray-800'
-              : 'bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm border border-white/40 dark:border-gray-800/60'
+      {/* ---------- Top bar (mirrors goedu.ac: transparent at the top, floating white pill once scrolled) ---------- */}
+      <div className="fixed top-0 left-0 right-0 z-[90]">
+        <AnimatePresence>
+          {scrolled && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-x-0 top-0 backdrop-blur-md bg-white/30 dark:bg-gray-900/30"
+              style={{ height: 15 }}
+            />
           )}
-        >
-          <div className="px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 lg:h-20">
-              <div className="flex items-center gap-8">
-                <Link to="/" className="flex items-center cursor-pointer" aria-label="GoEdu home">
-                  <img src="/logo.svg" alt="GoEdu Logo" width="140" height="45" className="h-9 lg:h-10 w-auto" />
-                </Link>
-                <nav className="hidden lg:flex items-center bg-[#E7E7E7] dark:bg-gray-800 rounded-full px-2 py-1.5">
-                  {NAV.map((n) => (
-                    <NavLink
-                      key={n.to}
-                      to={n.to}
-                      end={n.end}
-                      className={({ isActive }) =>
-                        cn(
-                          'relative px-5 py-2 font-workSans cursor-pointer rounded-full transition-all duration-200',
-                          isActive
-                            ? 'bg-white dark:bg-gray-700 text-[#ED8E22] font-semibold shadow-sm'
-                            : 'text-gray-700 dark:text-gray-200 hover:bg-white/50 dark:hover:bg-gray-700/60 hover:text-gray-900 dark:hover:text-white'
-                        )
-                      }
-                    >
-                      {n.label}
-                    </NavLink>
-                  ))}
-                </nav>
-              </div>
+        </AnimatePresence>
+        <div className="relative pt-2.5">
+          <div className="container mx-auto px-4 sm:px-0">
+            <motion.header
+              initial={{ y: -100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1, scale: scrolled ? 0.98 : 1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30, scale: { duration: 0.3 } }}
+              className={cn(
+                'w-full rounded-full transition-all duration-300',
+                scrolled ? 'bg-white dark:bg-gray-900 shadow-lg border border-gray-200 dark:border-gray-700' : 'bg-transparent'
+              )}
+            >
+              <div className="px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-20">
+                  <div className="flex items-center gap-8">
+                    <Link to="/" className="flex items-center cursor-pointer" aria-label="GoEdu home">
+                      <img src="/logo.svg" alt="GoEdu Logo" width="140" height="45" className="h-10 w-auto" />
+                    </Link>
+                    <nav className="hidden lg:flex items-center bg-[#E7E7E7] dark:bg-gray-800 rounded-full px-2 py-1.5">
+                      {NAV.map((n) => (
+                        <NavLink
+                          key={n.to}
+                          to={n.to}
+                          end={n.end}
+                          className={({ isActive }) =>
+                            cn(
+                              'relative px-5 py-2 font-workSans cursor-pointer rounded-full transition-all duration-200',
+                              isActive
+                                ? 'bg-white dark:bg-gray-700 text-[#ED8E22] font-semibold dark:text-white shadow-sm'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
+                            )
+                          }
+                        >
+                          {n.label}
+                        </NavLink>
+                      ))}
+                    </nav>
+                  </div>
 
-              <div className="flex items-center gap-1 sm:gap-2">
-                <button
-                  onClick={toggleCart}
-                  className="relative flex items-center justify-center w-10 h-10 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  aria-label="Open cart"
-                >
-                  <ShoppingBag className="w-5 h-5" />
-                  {count > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-[#ED8E22] text-white text-[10px] font-bold flex items-center justify-center">
-                      {count}
-                    </span>
-                  )}
-                </button>
-                {status === 'loading' ? (
-                  <div className="hidden lg:block h-8 w-20 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
-                ) : isAuthenticated ? (
-                  <div className="hidden lg:block"><UserMenu /></div>
-                ) : (
-                  <Link to={loginUrl} className="hidden lg:flex items-center justify-center rounded-full text-gray-700 dark:text-gray-200 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Log In">
-                    <User className="w-5 h-5 font-bold" />
-                    <span className="font-workSans ml-1 text-sm">Log in</span>
-                  </Link>
-                )}
-                <div className="hidden lg:block"><ThemeToggle /></div>
-                <button
-                  onClick={() => setMobileOpen(true)}
-                  className="flex lg:hidden items-center justify-center w-10 h-10 rounded-full text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                  aria-label="Toggle Mobile Menu"
-                >
-                  <Menu />
-                </button>
+                  <div className="flex items-center gap-2">
+                    {status === 'loading' ? (
+                      <div className="hidden lg:block h-9 w-28 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
+                    ) : isAuthenticated ? (
+                      <div className="hidden lg:block"><UserMenu /></div>
+                    ) : (
+                      <Link
+                        to={loginUrl}
+                        className="hidden lg:flex items-center justify-center rounded-full text-gray-700 dark:text-gray-300 transition-colors hover:text-gray-900 dark:hover:text-white"
+                        aria-label="Log In"
+                      >
+                        <User className="w-5 h-5" size={20} strokeWidth={2} />
+                        <span className="font-workSans ml-1 text-sm">Log in</span>
+                      </Link>
+                    )}
+                    {/* the cart icon only exists for logged in learners, as on goedu.ac */}
+                    {isAuthenticated && (
+                      <button
+                        onClick={toggleCart}
+                        className="relative flex items-center justify-center w-10 h-10 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        aria-label="Cart"
+                      >
+                        <ShoppingCart size={20} strokeWidth={2} />
+                        {count > 0 && (
+                          <span className="absolute -top-1 -right-1 bg-[#E7B108] text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center font-bold">
+                            {count}
+                          </span>
+                        )}
+                      </button>
+                    )}
+                    <div className="hidden lg:block"><ThemeToggle /></div>
+                    <button
+                      onClick={() => setMobileOpen((v) => !v)}
+                      className="flex lg:hidden items-center justify-center w-10 h-10 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      aria-label="Toggle Mobile Menu"
+                    >
+                      {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </motion.header>
           </div>
-        </header>
+        </div>
       </div>
 
       {/* ---------- Mobile drawer ---------- */}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ChevronUp } from 'lucide-react';
 import { cn } from '../../utils/format';
 
-/** Orange "scroll to top" button shown after scrolling, as on goedu.ac. */
+/** Flat amber "scroll to top" button, bottom-left, shown after scrolling. */
 export default function BackToTop() {
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -17,11 +17,11 @@ export default function BackToTop() {
       aria-label="Back to top"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       className={cn(
-        'fixed bottom-24 right-6 sm:bottom-24 sm:right-7 z-[94] w-10 h-10 rounded-full bg-[#F3AC08] text-white shadow-lg shadow-orange-300/50 dark:shadow-none flex items-center justify-center transition-all hover:bg-[#d49607]',
+        'fixed bottom-6 left-6 z-[94] w-11 h-11 rounded-full bg-[#F5B622] text-white flex items-center justify-center transition-all duration-300 hover:bg-[#E0A51C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5B622] focus-visible:ring-offset-2',
         show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
       )}
     >
-      <ChevronUp className="w-5 h-5" />
+      <ChevronUp className="w-5 h-5" strokeWidth={2.5} />
     </button>
   );
 }
